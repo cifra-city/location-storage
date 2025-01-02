@@ -5,30 +5,28 @@
 package dbcore
 
 import (
-	"database/sql"
-
 	"github.com/google/uuid"
 )
 
 type City struct {
 	ID        uuid.UUID
-	Name      sql.NullString
-	CountryID sql.NullInt32
+	Name      string
+	CountryID uuid.UUID
 }
 
 type Country struct {
 	ID   uuid.UUID
-	Name sql.NullString
+	Name string
 }
 
 type District struct {
 	ID     uuid.UUID
 	Name   string
-	CityID sql.NullInt32
+	CityID uuid.UUID
 }
 
 type Street struct {
 	ID         uuid.UUID
 	Name       string
-	DistrictID int32
+	DistrictID uuid.UUID
 }

@@ -3,7 +3,7 @@ package location_storage
 import (
 	"os"
 
-	"github.com/cifra-city/location-storage/internal /cli"
+	"github.com/cifra-city/location-storage/internal/cli"
 )
 
 func main() {

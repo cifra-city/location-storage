@@ -11,18 +11,25 @@ import (
 	"github.com/google/uuid"
 )
 
-const createStreet = `-- name: CreateStreet :exec
-INSERT INTO streets (name, district_id) VALUES ($1, $2)
+const createStreet = `-- name: CreateStreet :one
+INSERT INTO streets (
+    name,
+    district_id
+) VALUES (
+    $1, $2
+)  RETURNING id, name, district_id
 `
 
 type CreateStreetParams struct {
 	Name       string
-	DistrictID int32
+	DistrictID uuid.UUID
 }
 
-func (q *Queries) CreateStreet(ctx context.Context, arg CreateStreetParams) error {
-	_, err := q.db.ExecContext(ctx, createStreet, arg.Name, arg.DistrictID)
-	return err
+func (q *Queries) CreateStreet(ctx context.Context, arg CreateStreetParams) (Street, error) {
+	row := q.db.QueryRowContext(ctx, createStreet, arg.Name, arg.DistrictID)
+	var i Street
+	err := row.Scan(&i.ID, &i.Name, &i.DistrictID)
+	return i, err
 }
 
 const deleteStreet = `-- name: DeleteStreet :exec
@@ -45,6 +52,17 @@ func (q *Queries) GetStreetByID(ctx context.Context, id uuid.UUID) (Street, erro
 	return i, err
 }
 
+const getStreetByName = `-- name: GetStreetByName :one
+SELECT id, name, district_id FROM streets WHERE name = $1
+`
+
+func (q *Queries) GetStreetByName(ctx context.Context, name string) (Street, error) {
+	row := q.db.QueryRowContext(ctx, getStreetByName, name)
+	var i Street
+	err := row.Scan(&i.ID, &i.Name, &i.DistrictID)
+	return i, err
+}
+
 const getStreetsByDistrict = `-- name: GetStreetsByDistrict :many
 SELECT id, name FROM streets WHERE district_id = $1
 `
@@ -54,7 +72,7 @@ type GetStreetsByDistrictRow struct {
 	Name string
 }
 
-func (q *Queries) GetStreetsByDistrict(ctx context.Context, districtID int32) ([]GetStreetsByDistrictRow, error) {
+func (q *Queries) GetStreetsByDistrict(ctx context.Context, districtID uuid.UUID) ([]GetStreetsByDistrictRow, error) {
 	rows, err := q.db.QueryContext(ctx, getStreetsByDistrict, districtID)
 	if err != nil {
 		return nil, err
@@ -77,17 +95,24 @@ func (q *Queries) GetStreetsByDistrict(ctx context.Context, districtID int32) ([
 	return items, nil
 }
 
-const updateStreet = `-- name: UpdateStreet :exec
-UPDATE streets SET name = $2, district_id = $3 WHERE id = $1
+const updateStreet = `-- name: UpdateStreet :one
+UPDATE streets SET
+   name = $2,
+   district_id = $3
+WHERE
+   id = $1
+RETURNING id, name, district_id
 `
 
 type UpdateStreetParams struct {
 	ID         uuid.UUID
 	Name       string
-	DistrictID int32
+	DistrictID uuid.UUID
 }
 
-func (q *Queries) UpdateStreet(ctx context.Context, arg UpdateStreetParams) error {
-	_, err := q.db.ExecContext(ctx, updateStreet, arg.ID, arg.Name, arg.DistrictID)
-	return err
+func (q *Queries) UpdateStreet(ctx context.Context, arg UpdateStreetParams) (Street, error) {
+	row := q.db.QueryRowContext(ctx, updateStreet, arg.ID, arg.Name, arg.DistrictID)
+	var i Street
+	err := row.Scan(&i.ID, &i.Name, &i.DistrictID)
+	return i, err
 }

@@ -4,7 +4,6 @@ import (
 	"github.com/cifra-city/cifra-rabbit"
 	"github.com/cifra-city/location-storage/internal/data/db"
 	"github.com/cifra-city/tokens"
-	"github.com/cloudinary/cloudinary-go/v2"
 	"github.com/sirupsen/logrus"
 )
 

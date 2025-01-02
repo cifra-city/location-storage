@@ -7,18 +7,20 @@ package dbcore
 
 import (
 	"context"
-	"database/sql"
 
 	"github.com/google/uuid"
 )
 
-const createCountry = `-- name: CreateCountry :exec
-INSERT INTO countries (name) VALUES ($1)
+const createCountry = `-- name: CreateCountry :one
+INSERT INTO countries (name)
+VALUES ($1) RETURNING id, name
 `
 
-func (q *Queries) CreateCountry(ctx context.Context, name sql.NullString) error {
-	_, err := q.db.ExecContext(ctx, createCountry, name)
-	return err
+func (q *Queries) CreateCountry(ctx context.Context, name string) (Country, error) {
+	row := q.db.QueryRowContext(ctx, createCountry, name)
+	var i Country
+	err := row.Scan(&i.ID, &i.Name)
+	return i, err
 }
 
 const deleteCountry = `-- name: DeleteCountry :exec
@@ -68,16 +70,33 @@ func (q *Queries) GetCountryByID(ctx context.Context, id uuid.UUID) (Country, er
 	return i, err
 }
 
-const updateCountry = `-- name: UpdateCountry :exec
-UPDATE countries SET name = $2 WHERE id = $1
+const getCountryByName = `-- name: GetCountryByName :one
+SELECT id, name FROM countries WHERE name = $1
+`
+
+func (q *Queries) GetCountryByName(ctx context.Context, name string) (Country, error) {
+	row := q.db.QueryRowContext(ctx, getCountryByName, name)
+	var i Country
+	err := row.Scan(&i.ID, &i.Name)
+	return i, err
+}
+
+const updateCountry = `-- name: UpdateCountry :one
+UPDATE countries
+SET
+    name = $2
+WHERE id = $1
+RETURNING id, name
 `
 
 type UpdateCountryParams struct {
 	ID   uuid.UUID
-	Name sql.NullString
+	Name string
 }
 
-func (q *Queries) UpdateCountry(ctx context.Context, arg UpdateCountryParams) error {
-	_, err := q.db.ExecContext(ctx, updateCountry, arg.ID, arg.Name)
-	return err
+func (q *Queries) UpdateCountry(ctx context.Context, arg UpdateCountryParams) (Country, error) {
+	row := q.db.QueryRowContext(ctx, updateCountry, arg.ID, arg.Name)
+	var i Country
+	err := row.Scan(&i.ID, &i.Name)
+	return i, err
 }

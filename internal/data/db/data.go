@@ -7,6 +7,10 @@ import (
 )
 
 type Databaser struct {
+	Countries Countries
+	Cities    Cities
+	Districts Districts
+	Streets   Streets
 }
 
 func NewDBConnection(url string) (*sql.DB, error) {
@@ -28,5 +32,10 @@ func NewDatabaser(url string) (*Databaser, error) {
 		return nil, err
 	}
 	queries := dbcore.New(db)
-	return &Databaser{}, nil
+	return &Databaser{
+		Countries: NewCountries(queries),
+		Cities:    NewCities(queries),
+		Districts: NewDistricts(queries),
+		Streets:   NewStreets(queries),
+	}, nil
 }
