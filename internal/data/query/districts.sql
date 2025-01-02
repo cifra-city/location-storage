@@ -18,11 +18,18 @@ SELECT * FROM districts WHERE name = $1;
 -- name: DeleteDistrict :exec
 DELETE FROM districts WHERE id = $1;
 
--- name: UpdateDistrict :one
+-- name: UpdateDistrictName :one
 UPDATE districts
 SET
-    name = $2,
-    city_id = $3
+    name = $2
 WHERE id = $1
 RETURNING *;
+
+-- name: UpdateDistrictCity :one
+UPDATE districts
+SET
+    city_id = $2
+WHERE id = $1
+RETURNING *;
+
 

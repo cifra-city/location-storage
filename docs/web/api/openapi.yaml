@@ -1,0 +1,289 @@
+openapi: 3.0.0
+info:
+  description: SSO REST API for Cifra app
+  title: Cifra SSO REST API
+  version: 0.0.1
+servers:
+- url: /
+paths:
+  /users/create:
+    post:
+      operationId: test
+      responses:
+        "201":
+          description: test
+      summary: test
+components:
+  schemas:
+    CreateCountry:
+      properties:
+        data:
+          $ref: '#/components/schemas/CreateCountry_data'
+      required:
+      - data
+      type: object
+    CreateCity:
+      properties:
+        data:
+          $ref: '#/components/schemas/CreateCity_data'
+      required:
+      - data
+      type: object
+    CreateDistrict:
+      properties:
+        data:
+          $ref: '#/components/schemas/CreateDistrict_data'
+      required:
+      - data
+      type: object
+    CreateStreet:
+      properties:
+        data:
+          $ref: '#/components/schemas/CreateStreet_data'
+      required:
+      - data
+      type: object
+    UpdateCountry:
+      properties:
+        data:
+          $ref: '#/components/schemas/UpdateCountry_data'
+      required:
+      - data
+      type: object
+    UpdateCity:
+      properties:
+        data:
+          $ref: '#/components/schemas/UpdateCity_data'
+      required:
+      - data
+      type: object
+    UpdateDistrict:
+      properties:
+        data:
+          $ref: '#/components/schemas/UpdateDistrict_data'
+      required:
+      - data
+      type: object
+    UpdateStreet:
+      properties:
+        data:
+          $ref: '#/components/schemas/UpdateStreet_data'
+      required:
+      - data
+      type: object
+    CreateCountry_data_attributes:
+      properties:
+        name:
+          description: Country name
+          example: United States
+          type: string
+      required:
+      - name
+      type: object
+    CreateCountry_data:
+      properties:
+        type:
+          enum:
+          - create_country
+          type: string
+        attributes:
+          $ref: '#/components/schemas/CreateCountry_data_attributes'
+      required:
+      - attributes
+      - type
+      type: object
+    CreateCity_data_attributes:
+      properties:
+        name:
+          description: City name
+          example: kyiv
+          type: string
+        city_id:
+          description: City uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+          type: string
+        country_id:
+          description: Country uuid if u need to change country for the city
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+          type: string
+      required:
+      - city_id
+      - name
+      type: object
+    CreateCity_data:
+      properties:
+        type:
+          enum:
+          - update_city
+          type: string
+        attributes:
+          $ref: '#/components/schemas/CreateCity_data_attributes'
+      required:
+      - attributes
+      - type
+      type: object
+    CreateDistrict_data_attributes:
+      properties:
+        name:
+          description: District name
+          example: Saltovksliy district
+          type: string
+        city_id:
+          description: city uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+          type: string
+      required:
+      - city_id
+      - name
+      type: object
+    CreateDistrict_data:
+      properties:
+        type:
+          enum:
+          - create_district
+          type: string
+        attributes:
+          $ref: '#/components/schemas/CreateDistrict_data_attributes'
+      required:
+      - attributes
+      - type
+      type: object
+    CreateStreet_data_attributes:
+      properties:
+        name:
+          description: District name
+          example: Saltovksliy district
+          type: string
+        district_id:
+          description: District uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+          type: string
+      required:
+      - district_id
+      - name
+      type: object
+    CreateStreet_data:
+      properties:
+        type:
+          enum:
+          - create_street
+          type: string
+        attributes:
+          $ref: '#/components/schemas/CreateStreet_data_attributes'
+      required:
+      - attributes
+      - type
+      type: object
+    UpdateCountry_data_attributes:
+      properties:
+        new_name:
+          description: New country name
+          example: kyiv
+          type: string
+        country_id:
+          description: Country uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+          type: string
+      required:
+      - country_id
+      - new_name
+      type: object
+    UpdateCountry_data:
+      properties:
+        type:
+          enum:
+          - update_country
+          type: string
+        attributes:
+          $ref: '#/components/schemas/UpdateCountry_data_attributes'
+      required:
+      - attributes
+      - type
+      type: object
+    UpdateCity_data_attributes:
+      properties:
+        city_id:
+          description: City uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+          type: string
+        new_name:
+          description: City new name
+          example: kyiv
+          type: string
+        country_id:
+          description: Country uuid if you want to change country
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+          type: string
+      required:
+      - city_id
+      type: object
+    UpdateCity_data:
+      properties:
+        type:
+          enum:
+          - update_city
+          type: string
+        attributes:
+          $ref: '#/components/schemas/UpdateCity_data_attributes'
+      required:
+      - attributes
+      - type
+      type: object
+    UpdateDistrict_data_attributes:
+      properties:
+        new_name:
+          description: City new name
+          example: kyiv
+          type: string
+        district_id:
+          description: district uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+          type: string
+        city_id:
+          description: City uuid if u need to change city for the district
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+          type: string
+      required:
+      - district_id
+      type: object
+    UpdateDistrict_data:
+      properties:
+        type:
+          enum:
+          - update_district
+          type: string
+        attributes:
+          $ref: '#/components/schemas/UpdateDistrict_data_attributes'
+      required:
+      - attributes
+      - type
+      type: object
+    UpdateStreet_data_attributes:
+      properties:
+        new_name:
+          description: City name
+          example: kyiv
+          type: string
+        street_id:
+          description: Street uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+          type: string
+        district_id:
+          description: District uuid if u need to change district for the street
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+          type: string
+      required:
+      - street_id
+      type: object
+    UpdateStreet_data:
+      properties:
+        type:
+          enum:
+          - update_street
+          type: string
+        attributes:
+          $ref: '#/components/schemas/UpdateStreet_data_attributes'
+      required:
+      - attributes
+      - type
+      type: object

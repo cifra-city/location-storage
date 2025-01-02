@@ -18,8 +18,14 @@ SELECT * FROM cities WHERE name = $1;
 -- name: DeleteCity :exec
 DELETE FROM cities WHERE id = $1;
 
--- name: UpdateCity :one
+-- name: UpdateCityName :one
 UPDATE cities SET
     name = $2
+WHERE id = $1
+RETURNING *;
+
+-- name: UpdateCityCountry :one
+UPDATE cities SET
+    country_id = $2
 WHERE id = $1
 RETURNING *;

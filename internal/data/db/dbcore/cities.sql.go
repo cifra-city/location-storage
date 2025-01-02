@@ -90,20 +90,39 @@ func (q *Queries) GetCityByName(ctx context.Context, name string) (City, error) 
 	return i, err
 }
 
-const updateCity = `-- name: UpdateCity :one
+const updateCityCountry = `-- name: UpdateCityCountry :one
+UPDATE cities SET
+    country_id = $2
+WHERE id = $1
+RETURNING id, name, country_id
+`
+
+type UpdateCityCountryParams struct {
+	ID        uuid.UUID
+	CountryID uuid.UUID
+}
+
+func (q *Queries) UpdateCityCountry(ctx context.Context, arg UpdateCityCountryParams) (City, error) {
+	row := q.db.QueryRowContext(ctx, updateCityCountry, arg.ID, arg.CountryID)
+	var i City
+	err := row.Scan(&i.ID, &i.Name, &i.CountryID)
+	return i, err
+}
+
+const updateCityName = `-- name: UpdateCityName :one
 UPDATE cities SET
     name = $2
 WHERE id = $1
 RETURNING id, name, country_id
 `
 
-type UpdateCityParams struct {
+type UpdateCityNameParams struct {
 	ID   uuid.UUID
 	Name string
 }
 
-func (q *Queries) UpdateCity(ctx context.Context, arg UpdateCityParams) (City, error) {
-	row := q.db.QueryRowContext(ctx, updateCity, arg.ID, arg.Name)
+func (q *Queries) UpdateCityName(ctx context.Context, arg UpdateCityNameParams) (City, error) {
+	row := q.db.QueryRowContext(ctx, updateCityName, arg.ID, arg.Name)
 	var i City
 	err := row.Scan(&i.ID, &i.Name, &i.CountryID)
 	return i, err

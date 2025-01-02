@@ -1,0 +1,21 @@
+type: object
+required:
+  - data
+properties:
+  data:
+    required:
+      - type
+      - attributes
+    properties:
+      type:
+        type: string
+        enum: [ create_country ]
+      attributes:
+        type: object
+        required:
+          - name
+        properties:
+          name:
+            type: string
+            description: "Country name"
+            example: "United States"

@@ -95,23 +95,41 @@ func (q *Queries) GetDistrictsByCity(ctx context.Context, cityID uuid.UUID) ([]G
 	return items, nil
 }
 
-const updateDistrict = `-- name: UpdateDistrict :one
+const updateDistrictCity = `-- name: UpdateDistrictCity :one
 UPDATE districts
 SET
-    name = $2,
-    city_id = $3
+    city_id = $2
 WHERE id = $1
 RETURNING id, name, city_id
 `
 
-type UpdateDistrictParams struct {
+type UpdateDistrictCityParams struct {
 	ID     uuid.UUID
-	Name   string
 	CityID uuid.UUID
 }
 
-func (q *Queries) UpdateDistrict(ctx context.Context, arg UpdateDistrictParams) (District, error) {
-	row := q.db.QueryRowContext(ctx, updateDistrict, arg.ID, arg.Name, arg.CityID)
+func (q *Queries) UpdateDistrictCity(ctx context.Context, arg UpdateDistrictCityParams) (District, error) {
+	row := q.db.QueryRowContext(ctx, updateDistrictCity, arg.ID, arg.CityID)
+	var i District
+	err := row.Scan(&i.ID, &i.Name, &i.CityID)
+	return i, err
+}
+
+const updateDistrictName = `-- name: UpdateDistrictName :one
+UPDATE districts
+SET
+    name = $2
+WHERE id = $1
+RETURNING id, name, city_id
+`
+
+type UpdateDistrictNameParams struct {
+	ID   uuid.UUID
+	Name string
+}
+
+func (q *Queries) UpdateDistrictName(ctx context.Context, arg UpdateDistrictNameParams) (District, error) {
+	row := q.db.QueryRowContext(ctx, updateDistrictName, arg.ID, arg.Name)
 	var i District
 	err := row.Scan(&i.ID, &i.Name, &i.CityID)
 	return i, err

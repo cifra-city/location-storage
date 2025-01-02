@@ -14,7 +14,8 @@ type Cities interface {
 	GetByName(ctx context.Context, name string) (dbcore.City, error)
 	GetByCountry(ctx context.Context, countryID uuid.UUID) ([]dbcore.City, error)
 
-	Update(ctx context.Context, id uuid.UUID, name string) (dbcore.City, error)
+	UpdateName(ctx context.Context, id uuid.UUID, name string) (dbcore.City, error)
+	UpdateCountry(ctx context.Context, CityId uuid.UUID, countryID uuid.UUID) (dbcore.City, error)
 
 	Delete(ctx context.Context, id uuid.UUID) error
 }
@@ -46,10 +47,17 @@ func (c *cities) GetByCountry(ctx context.Context, countryID uuid.UUID) ([]dbcor
 	return c.queries.GetCitiesByCountry(ctx, countryID)
 }
 
-func (c *cities) Update(ctx context.Context, id uuid.UUID, name string) (dbcore.City, error) {
-	return c.queries.UpdateCity(ctx, dbcore.UpdateCityParams{
+func (c *cities) UpdateName(ctx context.Context, id uuid.UUID, name string) (dbcore.City, error) {
+	return c.queries.UpdateCityName(ctx, dbcore.UpdateCityNameParams{
 		ID:   id,
 		Name: name,
+	})
+}
+
+func (c *cities) UpdateCountry(ctx context.Context, CityId uuid.UUID, countryID uuid.UUID) (dbcore.City, error) {
+	return c.queries.UpdateCityCountry(ctx, dbcore.UpdateCityCountryParams{
+		ID:        CityId,
+		CountryID: countryID,
 	})
 }
 

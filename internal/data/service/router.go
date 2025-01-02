@@ -6,6 +6,7 @@ import (
 	"github.com/cifra-city/cifractx"
 	"github.com/cifra-city/httpkit"
 	"github.com/cifra-city/location-storage/internal/config"
+	"github.com/cifra-city/location-storage/internal/data/service/handlers"
 	"github.com/go-chi/chi/v5"
 	"github.com/sirupsen/logrus"
 )
@@ -26,16 +27,16 @@ func Run(ctx context.Context) {
 			r.Route("/private", func(r chi.Router) {
 				r.Use(authMW)
 				r.Route("/create", func(r chi.Router) {
-					r.Post("/country", nil)
-					r.Post("/city", nil)
-					r.Post("/districts", nil)
-					r.Post("/streets", nil)
+					r.Post("/country", handlers.CreateCountry)
+					r.Post("/city", handlers.CreateCity)
+					r.Post("/districts", handlers.CreateDistrict)
+					r.Post("/streets", handlers.CreateStreet)
 				})
 				r.Route("/update", func(r chi.Router) {
-					r.Put("/country", nil)
-					r.Put("/city", nil)
-					r.Put("/districts", nil)
-					r.Put("/streets", nil)
+					r.Put("/country", handlers.UpdateCountry)
+					r.Put("/city", handlers.UpdateCity)
+					r.Put("/districts", handlers.UpdateDistrict)
+					r.Put("/streets", handlers.UpdateStreet)
 				})
 			})
 			r.Route("/public", func(r chi.Router) {

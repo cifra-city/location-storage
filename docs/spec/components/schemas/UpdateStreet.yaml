@@ -1,0 +1,29 @@
+type: object
+required:
+  - data
+properties:
+  data:
+    required:
+      - type
+      - attributes
+    properties:
+      type:
+        type: string
+        enum: [ update_street ]
+      attributes:
+        type: object
+        required:
+          - street_id
+        properties:
+          new_name:
+            type: string
+            description: "City name"
+            example: "kyiv"
+          street_id:
+            type: string
+            description: "Street uuid"
+            example: "d290f1ee-6c54-4b01-90e6-d701748f0851"
+          district_id:
+            type: string
+            description: "District uuid if u need to change district for the street"
+            example: "d290f1ee-6c54-4b01-90e6-d701748f0851"
