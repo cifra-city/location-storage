@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/cifra-city/cifractx"
 	"github.com/cifra-city/httpkit"
@@ -28,7 +29,7 @@ func UpdateCountry(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	newCountryName := req.Data.Attributes.NewName
+	newCountryName := strings.ToLower(req.Data.Attributes.NewName)
 	newCountryId := req.Data.Attributes.CountryId
 
 	countryId, err := uuid.Parse(newCountryId)

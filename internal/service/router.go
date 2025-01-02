@@ -41,11 +41,17 @@ func Run(ctx context.Context) {
 			})
 
 			r.Route("/public", func(r chi.Router) { //PUBLIC
-				r.Route("/get/{id}", func(r chi.Router) {
+				r.Route("/get_data/{id}", func(r chi.Router) {
 					r.Get("/country", handlers.DataByCountry)
 					r.Get("/city", handlers.DataByCity)
 					r.Get("/districts", handlers.DataByDistrict)
 					r.Get("/streets", handlers.DataByStreet)
+				})
+				r.Route("/check", func(r chi.Router) {
+					r.Route("/access", func(r chi.Router) {
+						r.Get("/{city}/{district}/{street}", handlers.CheckCredibilityAddress)
+						r.Get("/text/{city}/{district}/{street}", handlers.CheckCredibilityAddressByText)
+					})
 				})
 			})
 		})

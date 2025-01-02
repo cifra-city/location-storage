@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/cifra-city/cifractx"
 	"github.com/cifra-city/httpkit"
@@ -40,7 +41,7 @@ func UpdateCity(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if newCityName != nil {
-		_, err = server.Databaser.Cities.UpdateName(r.Context(), cityId, *newCityName)
+		_, err = server.Databaser.Cities.UpdateName(r.Context(), cityId, strings.ToLower(*newCityName))
 		if err != nil {
 			log.Errorf("Failed to update city name: %v", err)
 			httpkit.RenderErr(w, problems.InternalError())

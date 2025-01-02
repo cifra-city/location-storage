@@ -3,6 +3,7 @@ package handlers
 import (
 	"errors"
 	"net/http"
+	"strings"
 
 	"github.com/cifra-city/cifractx"
 	"github.com/cifra-city/httpkit"
@@ -42,7 +43,7 @@ func CreateCountry(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	name := req.Data.Attributes.Name
+	name := strings.ToLower(req.Data.Attributes.Name)
 
 	if name == "" {
 		log.Warn("City name is required")

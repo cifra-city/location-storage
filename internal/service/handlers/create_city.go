@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/cifra-city/cifractx"
 	"github.com/cifra-city/httpkit"
@@ -43,7 +44,7 @@ func CreateCity(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	name := req.Data.Attributes.Name
+	name := strings.ToLower(req.Data.Attributes.Name)
 	country := req.Data.Attributes.CountryId
 
 	if name == "" {
