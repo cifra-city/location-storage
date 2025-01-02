@@ -6,7 +6,7 @@ import (
 	"github.com/cifra-city/cifractx"
 	"github.com/cifra-city/httpkit"
 	"github.com/cifra-city/location-storage/internal/config"
-	"github.com/cifra-city/location-storage/internal/data/service/handlers"
+	"github.com/cifra-city/location-storage/internal/service/handlers"
 	"github.com/go-chi/chi/v5"
 	"github.com/sirupsen/logrus"
 )
@@ -24,7 +24,7 @@ func Run(ctx context.Context) {
 
 	r.Route("/location-storage", func(r chi.Router) {
 		r.Route("/v1", func(r chi.Router) {
-			r.Route("/private", func(r chi.Router) {
+			r.Route("/private", func(r chi.Router) { //ADMIN ONLY
 				r.Use(authMW)
 				r.Route("/create", func(r chi.Router) {
 					r.Post("/country", handlers.CreateCountry)
@@ -39,8 +39,13 @@ func Run(ctx context.Context) {
 					r.Put("/streets", handlers.UpdateStreet)
 				})
 			})
-			r.Route("/public", func(r chi.Router) {
-				r.Route("/get", func(r chi.Router) {
+
+			r.Route("/public", func(r chi.Router) { //PUBLIC
+				r.Route("/get/{id}", func(r chi.Router) {
+					r.Get("/country", handlers.DataByCountry)
+					r.Get("/city", handlers.DataByCity)
+					r.Get("/districts", handlers.DataByDistrict)
+					r.Get("/streets", handlers.DataByStreet)
 				})
 			})
 		})

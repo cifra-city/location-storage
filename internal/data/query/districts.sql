@@ -7,10 +7,10 @@ INSERT INTO districts (
 ) RETURNING *;
 
 -- name: GetDistrictByID :one
-SELECT id, name, city_id FROM districts WHERE id = $1;
+SELECT * FROM districts WHERE id = $1;
 
 -- name: GetDistrictsByCity :many
-SELECT id, name FROM districts WHERE city_id = $1;
+SELECT * FROM districts WHERE city_id = $1;
 
 -- name: GetDistrictByName :one
 SELECT * FROM districts WHERE name = $1;

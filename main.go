@@ -1,4 +1,4 @@
-package location_storage
+package main
 
 import (
 	"os"

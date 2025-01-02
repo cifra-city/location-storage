@@ -7,7 +7,7 @@ import (
 	"github.com/cifra-city/httpkit"
 	"github.com/cifra-city/httpkit/problems"
 	"github.com/cifra-city/location-storage/internal/config"
-	"github.com/cifra-city/location-storage/internal/data/service/requests"
+	"github.com/cifra-city/location-storage/internal/service/requests"
 	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"
 )

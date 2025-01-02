@@ -12,11 +12,11 @@ type Districts interface {
 
 	Get(ctx context.Context, id uuid.UUID) (dbcore.District, error)
 	GetByName(ctx context.Context, name string) (dbcore.District, error)
-	GetByCity(ctx context.Context, cityID uuid.UUID) ([]dbcore.GetDistrictsByCityRow, error)
+	GetByCity(ctx context.Context, cityID uuid.UUID) ([]dbcore.District, error)
 
 	UpdateName(ctx context.Context, id uuid.UUID, name string) (dbcore.District, error)
 	UpdateCity(ctx context.Context, districtId uuid.UUID, cityId uuid.UUID) (dbcore.District, error)
-	
+
 	Delete(ctx context.Context, id uuid.UUID) error
 }
 
@@ -43,7 +43,7 @@ func (d *district) GetByName(ctx context.Context, name string) (dbcore.District,
 	return d.queries.GetDistrictByName(ctx, name)
 }
 
-func (d *district) GetByCity(ctx context.Context, cityID uuid.UUID) ([]dbcore.GetDistrictsByCityRow, error) {
+func (d *district) GetByCity(ctx context.Context, cityID uuid.UUID) ([]dbcore.District, error) {
 	return d.queries.GetDistrictsByCity(ctx, cityID)
 }
 

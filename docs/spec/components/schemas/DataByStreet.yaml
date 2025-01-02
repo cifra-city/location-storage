@@ -1,0 +1,33 @@
+type: object
+required:
+  - data
+properties:
+  data:
+    required:
+      - id
+      - type
+      - attributes
+    properties:
+      id:
+        type: string
+        format: uuid
+        description: "street id"
+      type:
+        type: string
+        enum: [ data_by_street ]
+      attributes:
+        type: object
+        required:
+          - city
+          - district
+          - name
+        properties:
+          city:
+            type: string
+            description: "city uuid"
+          district:
+            type: string
+            description: "district uuid"
+          name:
+            type: string
+            description: "Street name"

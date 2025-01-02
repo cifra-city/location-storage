@@ -18,8 +18,6 @@ github.com/cifra-city/cifractx v0.0.0-20241220023258-6841644fc9a1 h1:+zKz3GLk0sO
 github.com/cifra-city/cifractx v0.0.0-20241220023258-6841644fc9a1/go.mod h1:Hc7RrQaOFkMBFKwQwB02M94hG8mHztiCwPsD2jIrBqc=
 github.com/cifra-city/httpkit v0.0.0-20241220020938-31caee808935 h1:lrTVqdhw/NG3cgUSZ8cCMEQGMnLDqAIsj0VP6VdaFA8=
 github.com/cifra-city/httpkit v0.0.0-20241220020938-31caee808935/go.mod h1:YIJ3wK4+GVz1TRAmFHJglwWV7usxYGICZgaWSWZINwg=
-github.com/cifra-city/tokens v1.2.17 h1:Bd6G5jIVzwPwybSloSnZDKLw8l21XQJJAZkKZUhk+oI=
-github.com/cifra-city/tokens v1.2.17/go.mod h1:szvYYQy+GDRQqVSv47e/Nd96RSNLn3VCITk61epZ53g=
 github.com/cifra-city/tokens v1.3.0 h1:3DuG4cR/qdrB2Zu85Ql8yXkJ4vRvg+HppIp9EDBqgoI=
 github.com/cifra-city/tokens v1.3.0/go.mod h1:szvYYQy+GDRQqVSv47e/Nd96RSNLn3VCITk61epZ53g=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

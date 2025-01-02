@@ -7,12 +7,12 @@ import (
 	"github.com/cifra-city/httpkit"
 	"github.com/cifra-city/httpkit/problems"
 	"github.com/cifra-city/location-storage/internal/config"
-	"github.com/cifra-city/location-storage/internal/data/service/requests"
+	"github.com/cifra-city/location-storage/internal/service/requests"
 	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"
 )
 
-func UpdateCity(w http.ResponseWriter, r *http.Request) {
+func UpdateStreet(w http.ResponseWriter, r *http.Request) {
 	server, err := cifractx.GetValue[*config.Service](r.Context(), config.SERVER)
 	if err != nil {
 		logrus.Errorf("Failed to retrieve service configuration: %v", err)
@@ -21,43 +21,43 @@ func UpdateCity(w http.ResponseWriter, r *http.Request) {
 	}
 	log := server.Logger
 
-	req, err := requests.NewUpdateCity(r)
+	req, err := requests.NewUpdateStreet(r)
 	if err != nil {
 		log.Debugf("error decoding request: %v", err)
 		httpkit.RenderErr(w, problems.BadRequest(err)...)
 		return
 	}
 
-	city := req.Data.Attributes.CityId
-	newCityName := req.Data.Attributes.NewName
-	newCountryId := req.Data.Attributes.CountryId
+	newName := req.Data.Attributes.NewName
+	street := req.Data.Attributes.StreetId
+	newDistrict := req.Data.Attributes.DistrictId
 
-	cityId, err := uuid.Parse(city)
+	streetId, err := uuid.Parse(street)
 	if err != nil {
-		log.Debugf("error parsing city id: %v", err)
+		log.Debugf("error parsing street id: %v", err)
 		httpkit.RenderErr(w, problems.BadRequest(err)...)
 		return
 	}
 
-	if newCityName != nil {
-		_, err = server.Databaser.Cities.UpdateName(r.Context(), cityId, *newCityName)
+	if newName != nil {
+		_, err = server.Databaser.Streets.UpdateName(r.Context(), streetId, *newName)
 		if err != nil {
-			log.Errorf("Failed to update city name: %v", err)
+			log.Errorf("Failed to update street name: %v", err)
 			httpkit.RenderErr(w, problems.InternalError())
 			return
 		}
 	}
 
-	if newCountryId != nil {
-		countryId, err := uuid.Parse(*newCountryId)
+	if newDistrict != nil {
+		newDistrictId, err := uuid.Parse(*newDistrict)
 		if err != nil {
-			log.Debugf("error parsing country id: %v", err)
+			log.Debugf("error parsing district id: %v", err)
 			httpkit.RenderErr(w, problems.BadRequest(err)...)
 			return
 		}
-		_, err = server.Databaser.Cities.UpdateCountry(r.Context(), cityId, countryId)
+		_, err = server.Databaser.Streets.UpdateDistrict(r.Context(), streetId, newDistrictId)
 		if err != nil {
-			log.Errorf("Failed to update city country: %v", err)
+			log.Errorf("Failed to update street district: %v", err)
 			httpkit.RenderErr(w, problems.InternalError())
 			return
 		}

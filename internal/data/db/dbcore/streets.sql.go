@@ -64,24 +64,19 @@ func (q *Queries) GetStreetByName(ctx context.Context, name string) (Street, err
 }
 
 const getStreetsByDistrict = `-- name: GetStreetsByDistrict :many
-SELECT id, name FROM streets WHERE district_id = $1
+SELECT id, name, district_id FROM streets WHERE district_id = $1
 `
 
-type GetStreetsByDistrictRow struct {
-	ID   uuid.UUID
-	Name string
-}
-
-func (q *Queries) GetStreetsByDistrict(ctx context.Context, districtID uuid.UUID) ([]GetStreetsByDistrictRow, error) {
+func (q *Queries) GetStreetsByDistrict(ctx context.Context, districtID uuid.UUID) ([]Street, error) {
 	rows, err := q.db.QueryContext(ctx, getStreetsByDistrict, districtID)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []GetStreetsByDistrictRow
+	var items []Street
 	for rows.Next() {
-		var i GetStreetsByDistrictRow
-		if err := rows.Scan(&i.ID, &i.Name); err != nil {
+		var i Street
+		if err := rows.Scan(&i.ID, &i.Name, &i.DistrictID); err != nil {
 			return nil, err
 		}
 		items = append(items, i)

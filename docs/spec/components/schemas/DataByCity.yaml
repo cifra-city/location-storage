@@ -1,0 +1,45 @@
+type: object
+required:
+  - data
+properties:
+  data:
+    required:
+      - id
+      - type
+      - attributes
+    properties:
+      id:
+        type: string
+        format: uuid
+        description: "city id"
+      type:
+        type: string
+        enum: [ data_by_city ]
+      attributes:
+        type: object
+        required:
+          - name
+          - country
+          - districts
+        properties:
+          name:
+            type: string
+            description: "City name"
+          country:
+            type: string
+            description: "Country name"
+          districts:
+            type: array
+            items:
+              type: object
+              required:
+                - id
+                - name
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                  description: "district id"
+                name:
+                  type: string
+                  description: "District name"

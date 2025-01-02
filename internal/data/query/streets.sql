@@ -7,10 +7,10 @@ INSERT INTO streets (
 )  RETURNING *;
 
 -- name: GetStreetByID :one
-SELECT id, name, district_id FROM streets WHERE id = $1;
+SELECT * FROM streets WHERE id = $1;
 
 -- name: GetStreetsByDistrict :many
-SELECT id, name FROM streets WHERE district_id = $1;
+SELECT * FROM streets WHERE district_id = $1;
 
 -- name: GetStreetByName :one
 SELECT * FROM streets WHERE name = $1;

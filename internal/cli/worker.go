@@ -4,7 +4,7 @@ import (
 	"context"
 	"sync"
 
-	"github.com/cifra-city/location-storage/internal/data/service"
+	"github.com/cifra-city/location-storage/internal/service"
 )
 
 func runServices(ctx context.Context, wg *sync.WaitGroup) {
