@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/cifra-city/cifractx"
-	"github.com/cifra-city/httpkit"
-	"github.com/cifra-city/httpkit/problems"
+	"github.com/cifra-city/comtools/cifractx"
+	"github.com/cifra-city/comtools/httpkit"
+	"github.com/cifra-city/comtools/httpkit/problems"
 	"github.com/cifra-city/location-storage/internal/config"
 	"github.com/go-chi/chi/v5"
 	"github.com/sirupsen/logrus"
