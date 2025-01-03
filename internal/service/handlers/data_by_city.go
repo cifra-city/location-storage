@@ -7,7 +7,7 @@ import (
 	"github.com/cifra-city/comtools/httpkit"
 	"github.com/cifra-city/comtools/httpkit/problems"
 	"github.com/cifra-city/location-storage/internal/config"
-	"github.com/cifra-city/location-storage/internal/data/db/dbcore"
+	"github.com/cifra-city/location-storage/internal/data/db/sqlcore"
 	"github.com/cifra-city/location-storage/resources"
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
@@ -48,7 +48,7 @@ func DataByCity(w http.ResponseWriter, r *http.Request) {
 	httpkit.Render(w, NewDataByCityResponse(city, streets))
 }
 
-func NewDataByCityResponse(city dbcore.City, districts []dbcore.Street) resources.DataByCity {
+func NewDataByCityResponse(city sqlcore.City, districts []sqlcore.Street) resources.DataByCity {
 	var streetsInners []resources.DataByCityDataAttributesStreetsInner
 	for _, district := range districts {
 		streetsInners = append(streetsInners, resources.DataByCityDataAttributesStreetsInner{

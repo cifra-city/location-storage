@@ -3,7 +3,7 @@
 //   sqlc v1.27.0
 // source: streets.sql
 
-package dbcore
+package sqlcore
 
 import (
 	"context"

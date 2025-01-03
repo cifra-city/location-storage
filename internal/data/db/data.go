@@ -3,7 +3,7 @@ package db
 import (
 	"database/sql"
 
-	"github.com/cifra-city/location-storage/internal/data/db/dbcore"
+	"github.com/cifra-city/location-storage/internal/data/db/sqlcore"
 )
 
 type Databaser struct {
@@ -29,7 +29,7 @@ func NewDatabaser(url string) (*Databaser, error) {
 	if err != nil {
 		return nil, err
 	}
-	queries := dbcore.New(db)
+	queries := sqlcore.New(db)
 	return &Databaser{
 		Cities:  NewCities(queries),
 		Streets: NewStreets(queries),
