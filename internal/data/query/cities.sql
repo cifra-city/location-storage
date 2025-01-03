@@ -1,31 +1,38 @@
 -- name: CreateCity :one
-INSERT INTO cities (
-    name,
-    country_id
-) VALUES (
-    $1, $2
-) RETURNING *;
+INSERT INTO cities (id, name, location)
+VALUES ($1, $2, $3)
+RETURNING *;
 
--- name: GetCityByID :one
-SELECT * FROM cities WHERE id = $1;
+-- name: UpdateCity :one
+UPDATE cities
+SET name = $2, location = $3
+WHERE id = $1
+RETURNING *;
 
--- name: GetCitiesByCountry :many
-SELECT * FROM cities WHERE country_id = $1;
-
--- name: GetCityByName :one
-SELECT * FROM cities WHERE name = $1;
-
--- name: DeleteCity :exec
-DELETE FROM cities WHERE id = $1;
+-- name: UpdateCityLocation :one
+UPDATE cities
+SET location = $2
+WHERE id = $1
+RETURNING *;
 
 -- name: UpdateCityName :one
-UPDATE cities SET
-    name = $2
+UPDATE cities
+SET name = $2
 WHERE id = $1
 RETURNING *;
 
--- name: UpdateCityCountry :one
-UPDATE cities SET
-    country_id = $2
-WHERE id = $1
-RETURNING *;
+-- name: DeleteCity :exec
+DELETE FROM cities
+WHERE id = $1;
+
+-- name: GetCityByID :one
+SELECT * FROM cities
+WHERE id = $1;
+
+-- name: GetCityByName :one
+SELECT * FROM cities
+WHERE name = $1;
+
+-- name: ListCities :many
+SELECT * FROM cities
+ORDER BY name;

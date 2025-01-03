@@ -9,22 +9,18 @@ properties:
     properties:
       type:
         type: string
-        enum: [ update_city ]
+        enum: [ create_city ]
       attributes:
         type: object
         required:
           - name
-          - city_id
+          - location
         properties:
           name:
             type: string
             description: "City name"
             example: "kyiv"
-          city_id:
+          location:
             type: string
-            description: "City uuid"
-            example: "d290f1ee-6c54-4b01-90e6-d701748f0851"
-          country_id:
-            type: string
-            description: "Country uuid if u need to change country for the city"
-            example: "d290f1ee-6c54-4b01-90e6-d701748f0851"
+            description: "City location"
+            example: "50.4501,30.5234"

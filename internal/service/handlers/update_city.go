@@ -10,6 +10,7 @@ import (
 	"github.com/cifra-city/location-storage/internal/config"
 	"github.com/cifra-city/location-storage/internal/service/requests"
 	"github.com/google/uuid"
+	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )
 
@@ -29,9 +30,9 @@ func UpdateCity(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	city := req.Data.Attributes.CityId
+	city := req.Data.Id
 	newCityName := req.Data.Attributes.NewName
-	newCountryId := req.Data.Attributes.CountryId
+	newLocation := req.Data.Attributes.NewLocation
 
 	cityId, err := uuid.Parse(city)
 	if err != nil {
@@ -49,14 +50,15 @@ func UpdateCity(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if newCountryId != nil {
-		countryId, err := uuid.Parse(*newCountryId)
+	if newLocation != nil {
+		err = validateGeoString(*newLocation)
 		if err != nil {
-			log.Debugf("error parsing country id: %v", err)
-			httpkit.RenderErr(w, problems.BadRequest(err)...)
+			log.Warnf("Invalid location: %v", err)
+			httpkit.RenderErr(w, problems.BadRequest(errors.New("invalid location"))...)
 			return
 		}
-		_, err = server.Databaser.Cities.UpdateCountry(r.Context(), cityId, countryId)
+
+		_, err = server.Databaser.Cities.UpdateLocation(r.Context(), cityId, *newLocation)
 		if err != nil {
 			log.Errorf("Failed to update city country: %v", err)
 			httpkit.RenderErr(w, problems.InternalError())

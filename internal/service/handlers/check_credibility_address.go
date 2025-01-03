@@ -22,19 +22,11 @@ func CheckCredibilityAddress(w http.ResponseWriter, r *http.Request) {
 	log := server.Logger
 
 	cityUrl := strings.ToLower(chi.URLParam(r, "city"))
-	districtUrl := strings.ToLower(chi.URLParam(r, "district"))
 	streetUrl := strings.ToLower(chi.URLParam(r, "street"))
 
 	street, err := server.Databaser.Streets.GetByName(r.Context(), streetUrl)
 	if err != nil {
 		log.Errorf("Failed to get street: %v", err)
-		httpkit.RenderErr(w, problems.InternalError())
-		return
-	}
-
-	district, err := server.Databaser.Districts.GetByName(r.Context(), districtUrl)
-	if err != nil {
-		log.Errorf("Failed to get district: %v", err)
 		httpkit.RenderErr(w, problems.InternalError())
 		return
 	}
@@ -46,7 +38,7 @@ func CheckCredibilityAddress(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if street.DistrictID != district.ID && district.CityID != city.ID {
+	if street.CityID != city.ID {
 		httpkit.RenderErr(w, problems.Conflict())
 		return
 	}

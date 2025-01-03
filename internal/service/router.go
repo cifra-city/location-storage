@@ -7,6 +7,7 @@ import (
 	"github.com/cifra-city/comtools/httpkit"
 	"github.com/cifra-city/location-storage/internal/config"
 	"github.com/cifra-city/location-storage/internal/service/handlers"
+	"github.com/cifra-city/tokens"
 	"github.com/go-chi/chi/v5"
 	"github.com/sirupsen/logrus"
 )
@@ -20,37 +21,32 @@ func Run(ctx context.Context) {
 	}
 
 	r.Use(cifractx.MiddlewareWithContext(config.SERVER, service))
-	authMW := service.TokenManager.Middleware(service.Config.JWT.AccessToken.SecretKey)
+	_ = service.TokenManager.AuthMiddleware(service.Config.JWT.AccessToken.SecretKey)
+	moderatorGrants := service.TokenManager.RoleGrant(service.Config.JWT.AccessToken.SecretKey, tokens.AdminRole, tokens.ModeratorRole)
 
 	r.Route("/location-storage", func(r chi.Router) {
 		r.Route("/v1", func(r chi.Router) {
-			r.Route("/private", func(r chi.Router) { //ADMIN ONLY
-				r.Use(authMW)
+			r.Route("/private", func(r chi.Router) {
+				r.Use(moderatorGrants)
 				r.Route("/create", func(r chi.Router) {
-					r.Post("/country", handlers.CreateCountry)
 					r.Post("/city", handlers.CreateCity)
-					r.Post("/districts", handlers.CreateDistrict)
 					r.Post("/streets", handlers.CreateStreet)
 				})
 				r.Route("/update", func(r chi.Router) {
-					r.Put("/country", handlers.UpdateCountry)
 					r.Put("/city", handlers.UpdateCity)
-					r.Put("/districts", handlers.UpdateDistrict)
 					r.Put("/streets", handlers.UpdateStreet)
 				})
 			})
 
 			r.Route("/public", func(r chi.Router) { //PUBLIC
 				r.Route("/get_data/{id}", func(r chi.Router) {
-					r.Get("/country", handlers.DataByCountry)
 					r.Get("/city", handlers.DataByCity)
-					r.Get("/districts", handlers.DataByDistrict)
 					r.Get("/streets", handlers.DataByStreet)
 				})
 				r.Route("/check", func(r chi.Router) {
 					r.Route("/access", func(r chi.Router) {
-						r.Get("/{city}/{district}/{street}", handlers.CheckCredibilityAddress)
-						r.Get("/text/{city}/{district}/{street}", handlers.CheckCredibilityAddressByText)
+						r.Get("/{city}/{street}", handlers.CheckCredibilityAddress)
+						r.Get("/text/{city}/{street}", handlers.CheckCredibilityAddressByText)
 					})
 				})
 			})

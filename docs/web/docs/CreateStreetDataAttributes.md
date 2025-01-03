@@ -4,14 +4,15 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Name** | **string** | District name | 
-**DistrictId** | **string** | District uuid | 
+**Name** | **string** | city name | 
+**CityId** | **string** | city uuid | 
+**Location** | **string** | Street location | 
 
 ## Methods
 
 ### NewCreateStreetDataAttributes
 
-`func NewCreateStreetDataAttributes(name string, districtId string, ) *CreateStreetDataAttributes`
+`func NewCreateStreetDataAttributes(name string, cityId string, location string, ) *CreateStreetDataAttributes`
 
 NewCreateStreetDataAttributes instantiates a new CreateStreetDataAttributes object
 This constructor will assign default values to properties that have it defined,
@@ -46,24 +47,44 @@ and a boolean to check if the value has been set.
 SetName sets Name field to given value.
 
 
-### GetDistrictId
+### GetCityId
 
-`func (o *CreateStreetDataAttributes) GetDistrictId() string`
+`func (o *CreateStreetDataAttributes) GetCityId() string`
 
-GetDistrictId returns the DistrictId field if non-nil, zero value otherwise.
+GetCityId returns the CityId field if non-nil, zero value otherwise.
 
-### GetDistrictIdOk
+### GetCityIdOk
 
-`func (o *CreateStreetDataAttributes) GetDistrictIdOk() (*string, bool)`
+`func (o *CreateStreetDataAttributes) GetCityIdOk() (*string, bool)`
 
-GetDistrictIdOk returns a tuple with the DistrictId field if it's non-nil, zero value otherwise
+GetCityIdOk returns a tuple with the CityId field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetDistrictId
+### SetCityId
 
-`func (o *CreateStreetDataAttributes) SetDistrictId(v string)`
+`func (o *CreateStreetDataAttributes) SetCityId(v string)`
 
-SetDistrictId sets DistrictId field to given value.
+SetCityId sets CityId field to given value.
+
+
+### GetLocation
+
+`func (o *CreateStreetDataAttributes) GetLocation() string`
+
+GetLocation returns the Location field if non-nil, zero value otherwise.
+
+### GetLocationOk
+
+`func (o *CreateStreetDataAttributes) GetLocationOk() (*string, bool)`
+
+GetLocationOk returns a tuple with the Location field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetLocation
+
+`func (o *CreateStreetDataAttributes) SetLocation(v string)`
+
+SetLocation sets Location field to given value.
 
 
 

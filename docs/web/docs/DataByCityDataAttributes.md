@@ -5,14 +5,14 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Name** | **string** | City name | 
-**Country** | **string** | Country name | 
-**Districts** | [**[]DataByCityDataAttributesDistrictsInner**](DataByCityDataAttributesDistrictsInner.md) |  | 
+**Locations** | **string** | City location | 
+**Streets** | [**[]DataByCityDataAttributesStreetsInner**](DataByCityDataAttributesStreetsInner.md) |  | 
 
 ## Methods
 
 ### NewDataByCityDataAttributes
 
-`func NewDataByCityDataAttributes(name string, country string, districts []DataByCityDataAttributesDistrictsInner, ) *DataByCityDataAttributes`
+`func NewDataByCityDataAttributes(name string, locations string, streets []DataByCityDataAttributesStreetsInner, ) *DataByCityDataAttributes`
 
 NewDataByCityDataAttributes instantiates a new DataByCityDataAttributes object
 This constructor will assign default values to properties that have it defined,
@@ -47,44 +47,44 @@ and a boolean to check if the value has been set.
 SetName sets Name field to given value.
 
 
-### GetCountry
+### GetLocations
 
-`func (o *DataByCityDataAttributes) GetCountry() string`
+`func (o *DataByCityDataAttributes) GetLocations() string`
 
-GetCountry returns the Country field if non-nil, zero value otherwise.
+GetLocations returns the Locations field if non-nil, zero value otherwise.
 
-### GetCountryOk
+### GetLocationsOk
 
-`func (o *DataByCityDataAttributes) GetCountryOk() (*string, bool)`
+`func (o *DataByCityDataAttributes) GetLocationsOk() (*string, bool)`
 
-GetCountryOk returns a tuple with the Country field if it's non-nil, zero value otherwise
+GetLocationsOk returns a tuple with the Locations field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetCountry
+### SetLocations
 
-`func (o *DataByCityDataAttributes) SetCountry(v string)`
+`func (o *DataByCityDataAttributes) SetLocations(v string)`
 
-SetCountry sets Country field to given value.
+SetLocations sets Locations field to given value.
 
 
-### GetDistricts
+### GetStreets
 
-`func (o *DataByCityDataAttributes) GetDistricts() []DataByCityDataAttributesDistrictsInner`
+`func (o *DataByCityDataAttributes) GetStreets() []DataByCityDataAttributesStreetsInner`
 
-GetDistricts returns the Districts field if non-nil, zero value otherwise.
+GetStreets returns the Streets field if non-nil, zero value otherwise.
 
-### GetDistrictsOk
+### GetStreetsOk
 
-`func (o *DataByCityDataAttributes) GetDistrictsOk() (*[]DataByCityDataAttributesDistrictsInner, bool)`
+`func (o *DataByCityDataAttributes) GetStreetsOk() (*[]DataByCityDataAttributesStreetsInner, bool)`
 
-GetDistrictsOk returns a tuple with the Districts field if it's non-nil, zero value otherwise
+GetStreetsOk returns a tuple with the Streets field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetDistricts
+### SetStreets
 
-`func (o *DataByCityDataAttributes) SetDistricts(v []DataByCityDataAttributesDistrictsInner)`
+`func (o *DataByCityDataAttributes) SetStreets(v []DataByCityDataAttributesStreetsInner)`
 
-SetDistricts sets Districts field to given value.
+SetStreets sets Streets field to given value.
 
 
 

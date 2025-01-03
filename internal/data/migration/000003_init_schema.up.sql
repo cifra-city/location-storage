@@ -1,24 +1,17 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS postgis;
 
-CREATE TABLE "countries" (
-   "id" UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-   "name" varchar(255) NOT NULL UNIQUE
+-- Таблица городов
+CREATE TABLE cities (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name VARCHAR(255) NOT NULL UNIQUE,
+    location GEOGRAPHY(POLYGON, 4326) NOT NULL -- Границы города
 );
 
-CREATE TABLE "cities" (
-    "id" UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    "name" varchar(255) NOT NULL,
-    "country_id" uuid NOT NULL REFERENCES countries(id) ON DELETE CASCADE
-);
-
-CREATE TABLE "districts" (
-    "id" UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    "name" varchar(255) NOT NULL ,
-    "city_id" uuid NOT NULL REFERENCES cities(id) ON DELETE CASCADE
-);
-
-CREATE TABLE "streets" (
-    "id" UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    "name" varchar(255) NOT NULL,
-    "district_id" uuid NOT NULL REFERENCES districts(id) ON DELETE CASCADE
+-- Таблица улиц
+CREATE TABLE streets (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name VARCHAR(255) NOT NULL,
+    city_id UUID NOT NULL REFERENCES cities(id) ON DELETE CASCADE,
+    location GEOGRAPHY(LINESTRING, 4326) NOT NULL -- Линия улицы
 );

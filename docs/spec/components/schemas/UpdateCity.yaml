@@ -4,26 +4,25 @@ required:
 properties:
   data:
     required:
+      - id
       - type
       - attributes
     properties:
       type:
         type: string
         enum: [ update_city ]
+      id:
+        type: string
+        description: "City uuid"
+        example: "d290f1ee-6c54-4b01-90e6-d701748f0851"
       attributes:
         type: object
-        required:
-          - city_id
         properties:
-          city_id:
-            type: string
-            description: "City uuid"
-            example: "d290f1ee-6c54-4b01-90e6-d701748f0851"
           new_name:
             type: string
             description: "City new name"
             example: "kyiv"
-          country_id:
+          new_location:
             type: string
-            description: "Country uuid if you want to change country"
-            example: "d290f1ee-6c54-4b01-90e6-d701748f0851"
+            description: "City new location"
+            example: "50.4501,30.5234"

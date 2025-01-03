@@ -19,27 +19,32 @@ properties:
         type: object
         required:
           - name
-          - country
-          - districts
+          - streets
+          - locations
         properties:
           name:
             type: string
             description: "City name"
-          country:
+          locations:
             type: string
-            description: "Country name"
-          districts:
+            description: "City location"
+            example: "50.4501,30.5234"
+          streets:
             type: array
             items:
               type: object
               required:
                 - id
                 - name
+                - locations
               properties:
                 id:
                   type: string
                   format: uuid
-                  description: "district id"
+                  description: street id
                 name:
                   type: string
-                  description: "District name"
+                  description: street name
+                locations:
+                  type: string
+                  description: street location

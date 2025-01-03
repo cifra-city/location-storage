@@ -12,8 +12,6 @@ package resources
 
 import (
 	"encoding/json"
-	"bytes"
-	"fmt"
 )
 
 // checks if the UpdateStreetDataAttributes type satisfies the MappedNullable interface at compile time
@@ -23,21 +21,18 @@ var _ MappedNullable = &UpdateStreetDataAttributes{}
 type UpdateStreetDataAttributes struct {
 	// City name
 	NewName *string `json:"new_name,omitempty"`
-	// Street uuid
-	StreetId string `json:"street_id"`
-	// District uuid if u need to change district for the street
-	DistrictId *string `json:"district_id,omitempty"`
+	// City location
+	NewLocation *string `json:"new_location,omitempty"`
+	// City uuid
+	NewCity *string `json:"new_city,omitempty"`
 }
-
-type _UpdateStreetDataAttributes UpdateStreetDataAttributes
 
 // NewUpdateStreetDataAttributes instantiates a new UpdateStreetDataAttributes object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUpdateStreetDataAttributes(streetId string) *UpdateStreetDataAttributes {
+func NewUpdateStreetDataAttributes() *UpdateStreetDataAttributes {
 	this := UpdateStreetDataAttributes{}
-	this.StreetId = streetId
 	return &this
 }
 
@@ -81,60 +76,68 @@ func (o *UpdateStreetDataAttributes) SetNewName(v string) {
 	o.NewName = &v
 }
 
-// GetStreetId returns the StreetId field value
-func (o *UpdateStreetDataAttributes) GetStreetId() string {
-	if o == nil {
+// GetNewLocation returns the NewLocation field value if set, zero value otherwise.
+func (o *UpdateStreetDataAttributes) GetNewLocation() string {
+	if o == nil || IsNil(o.NewLocation) {
 		var ret string
 		return ret
 	}
-
-	return o.StreetId
+	return *o.NewLocation
 }
 
-// GetStreetIdOk returns a tuple with the StreetId field value
+// GetNewLocationOk returns a tuple with the NewLocation field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *UpdateStreetDataAttributes) GetStreetIdOk() (*string, bool) {
-	if o == nil {
+func (o *UpdateStreetDataAttributes) GetNewLocationOk() (*string, bool) {
+	if o == nil || IsNil(o.NewLocation) {
 		return nil, false
 	}
-	return &o.StreetId, true
+	return o.NewLocation, true
 }
 
-// SetStreetId sets field value
-func (o *UpdateStreetDataAttributes) SetStreetId(v string) {
-	o.StreetId = v
-}
-
-// GetDistrictId returns the DistrictId field value if set, zero value otherwise.
-func (o *UpdateStreetDataAttributes) GetDistrictId() string {
-	if o == nil || IsNil(o.DistrictId) {
-		var ret string
-		return ret
-	}
-	return *o.DistrictId
-}
-
-// GetDistrictIdOk returns a tuple with the DistrictId field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *UpdateStreetDataAttributes) GetDistrictIdOk() (*string, bool) {
-	if o == nil || IsNil(o.DistrictId) {
-		return nil, false
-	}
-	return o.DistrictId, true
-}
-
-// HasDistrictId returns a boolean if a field has been set.
-func (o *UpdateStreetDataAttributes) HasDistrictId() bool {
-	if o != nil && !IsNil(o.DistrictId) {
+// HasNewLocation returns a boolean if a field has been set.
+func (o *UpdateStreetDataAttributes) HasNewLocation() bool {
+	if o != nil && !IsNil(o.NewLocation) {
 		return true
 	}
 
 	return false
 }
 
-// SetDistrictId gets a reference to the given string and assigns it to the DistrictId field.
-func (o *UpdateStreetDataAttributes) SetDistrictId(v string) {
-	o.DistrictId = &v
+// SetNewLocation gets a reference to the given string and assigns it to the NewLocation field.
+func (o *UpdateStreetDataAttributes) SetNewLocation(v string) {
+	o.NewLocation = &v
+}
+
+// GetNewCity returns the NewCity field value if set, zero value otherwise.
+func (o *UpdateStreetDataAttributes) GetNewCity() string {
+	if o == nil || IsNil(o.NewCity) {
+		var ret string
+		return ret
+	}
+	return *o.NewCity
+}
+
+// GetNewCityOk returns a tuple with the NewCity field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *UpdateStreetDataAttributes) GetNewCityOk() (*string, bool) {
+	if o == nil || IsNil(o.NewCity) {
+		return nil, false
+	}
+	return o.NewCity, true
+}
+
+// HasNewCity returns a boolean if a field has been set.
+func (o *UpdateStreetDataAttributes) HasNewCity() bool {
+	if o != nil && !IsNil(o.NewCity) {
+		return true
+	}
+
+	return false
+}
+
+// SetNewCity gets a reference to the given string and assigns it to the NewCity field.
+func (o *UpdateStreetDataAttributes) SetNewCity(v string) {
+	o.NewCity = &v
 }
 
 func (o UpdateStreetDataAttributes) MarshalJSON() ([]byte, error) {
@@ -150,48 +153,13 @@ func (o UpdateStreetDataAttributes) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.NewName) {
 		toSerialize["new_name"] = o.NewName
 	}
-	toSerialize["street_id"] = o.StreetId
-	if !IsNil(o.DistrictId) {
-		toSerialize["district_id"] = o.DistrictId
+	if !IsNil(o.NewLocation) {
+		toSerialize["new_location"] = o.NewLocation
+	}
+	if !IsNil(o.NewCity) {
+		toSerialize["new_city"] = o.NewCity
 	}
 	return toSerialize, nil
-}
-
-func (o *UpdateStreetDataAttributes) UnmarshalJSON(data []byte) (err error) {
-	// This validates that all required properties are included in the JSON object
-	// by unmarshalling the object into a generic map with string keys and checking
-	// that every required field exists as a key in the generic map.
-	requiredProperties := []string{
-		"street_id",
-	}
-
-	allProperties := make(map[string]interface{})
-
-	err = json.Unmarshal(data, &allProperties)
-
-	if err != nil {
-		return err;
-	}
-
-	for _, requiredProperty := range(requiredProperties) {
-		if _, exists := allProperties[requiredProperty]; !exists {
-			return fmt.Errorf("no value given for required property %v", requiredProperty)
-		}
-	}
-
-	varUpdateStreetDataAttributes := _UpdateStreetDataAttributes{}
-
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varUpdateStreetDataAttributes)
-
-	if err != nil {
-		return err
-	}
-
-	*o = UpdateStreetDataAttributes(varUpdateStreetDataAttributes)
-
-	return err
 }
 
 type NullableUpdateStreetDataAttributes struct {

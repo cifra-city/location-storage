@@ -38,20 +38,20 @@ func DataByCity(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	districts, err := server.Databaser.Districts.GetByCity(r.Context(), cityId)
+	streets, err := server.Databaser.Streets.ListStreetsByCity(r.Context(), cityId)
 	if err != nil {
 		log.Errorf("Failed to get districts: %v", err)
 		httpkit.RenderErr(w, problems.InternalError())
 		return
 	}
 
-	httpkit.Render(w, NewDataByCityResponse(city, districts))
+	httpkit.Render(w, NewDataByCityResponse(city, streets))
 }
 
-func NewDataByCityResponse(city dbcore.City, districts []dbcore.District) resources.DataByCity {
-	var districtsInners []resources.DataByCityDataAttributesDistrictsInner
+func NewDataByCityResponse(city dbcore.City, districts []dbcore.Street) resources.DataByCity {
+	var streetsInners []resources.DataByCityDataAttributesStreetsInner
 	for _, district := range districts {
-		districtsInners = append(districtsInners, resources.DataByCityDataAttributesDistrictsInner{
+		streetsInners = append(streetsInners, resources.DataByCityDataAttributesStreetsInner{
 			Id:   district.ID.String(),
 			Name: district.Name,
 		})
@@ -61,8 +61,8 @@ func NewDataByCityResponse(city dbcore.City, districts []dbcore.District) resour
 			Id:   city.ID.String(),
 			Type: resources.DataByCityType,
 			Attributes: resources.DataByCityDataAttributes{
-				Name:      city.Name,
-				Districts: districtsInners,
+				Name:    city.Name,
+				Streets: streetsInners,
 			},
 		},
 	}

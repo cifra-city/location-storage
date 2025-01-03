@@ -45,7 +45,15 @@ func CreateStreet(w http.ResponseWriter, r *http.Request) {
 	}
 
 	name := strings.ToLower(req.Data.Attributes.Name)
-	district := req.Data.Attributes.DistrictId
+	city := req.Data.Attributes.CityId
+	location := req.Data.Attributes.Location
+
+	err = validateGeoString(location)
+	if err != nil {
+		log.Warnf("Invalid location: %v", err)
+		httpkit.RenderErr(w, problems.BadRequest(errors.New("invalid location"))...)
+		return
+	}
 
 	if name == "" {
 		log.Warn("City name is required")
@@ -53,14 +61,14 @@ func CreateStreet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	districtId, err := uuid.Parse(district)
+	cityId, err := uuid.Parse(city)
 	if err != nil {
 		log.Warn("Country ID is invalid")
 		httpkit.RenderErr(w, problems.BadRequest(errors.New("country ID is invalid"))...)
 		return
 	}
 
-	_, err = server.Databaser.Streets.Create(r.Context(), name, districtId)
+	_, err = server.Databaser.Streets.Create(r.Context(), name, cityId, location)
 	if err != nil {
 		log.Errorf("Failed to create country: %v", err)
 		httpkit.RenderErr(w, problems.InternalError())

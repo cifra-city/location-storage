@@ -5,13 +5,14 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Type** | **string** |  | 
+**Id** | **string** | City uuid | 
 **Attributes** | [**UpdateCityDataAttributes**](UpdateCityDataAttributes.md) |  | 
 
 ## Methods
 
 ### NewUpdateCityData
 
-`func NewUpdateCityData(type_ string, attributes UpdateCityDataAttributes, ) *UpdateCityData`
+`func NewUpdateCityData(type_ string, id string, attributes UpdateCityDataAttributes, ) *UpdateCityData`
 
 NewUpdateCityData instantiates a new UpdateCityData object
 This constructor will assign default values to properties that have it defined,
@@ -44,6 +45,26 @@ and a boolean to check if the value has been set.
 `func (o *UpdateCityData) SetType(v string)`
 
 SetType sets Type field to given value.
+
+
+### GetId
+
+`func (o *UpdateCityData) GetId() string`
+
+GetId returns the Id field if non-nil, zero value otherwise.
+
+### GetIdOk
+
+`func (o *UpdateCityData) GetIdOk() (*string, bool)`
+
+GetIdOk returns a tuple with the Id field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetId
+
+`func (o *UpdateCityData) SetId(v string)`
+
+SetId sets Id field to given value.
 
 
 ### GetAttributes

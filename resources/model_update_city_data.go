@@ -22,6 +22,8 @@ var _ MappedNullable = &UpdateCityData{}
 // UpdateCityData struct for UpdateCityData
 type UpdateCityData struct {
 	Type string `json:"type"`
+	// City uuid
+	Id string `json:"id"`
 	Attributes UpdateCityDataAttributes `json:"attributes"`
 }
 
@@ -31,9 +33,10 @@ type _UpdateCityData UpdateCityData
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUpdateCityData(type_ string, attributes UpdateCityDataAttributes) *UpdateCityData {
+func NewUpdateCityData(type_ string, id string, attributes UpdateCityDataAttributes) *UpdateCityData {
 	this := UpdateCityData{}
 	this.Type = type_
+	this.Id = id
 	this.Attributes = attributes
 	return &this
 }
@@ -68,6 +71,30 @@ func (o *UpdateCityData) GetTypeOk() (*string, bool) {
 // SetType sets field value
 func (o *UpdateCityData) SetType(v string) {
 	o.Type = v
+}
+
+// GetId returns the Id field value
+func (o *UpdateCityData) GetId() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value
+// and a boolean to check if the value has been set.
+func (o *UpdateCityData) GetIdOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Id, true
+}
+
+// SetId sets field value
+func (o *UpdateCityData) SetId(v string) {
+	o.Id = v
 }
 
 // GetAttributes returns the Attributes field value
@@ -105,6 +132,7 @@ func (o UpdateCityData) MarshalJSON() ([]byte, error) {
 func (o UpdateCityData) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["type"] = o.Type
+	toSerialize["id"] = o.Id
 	toSerialize["attributes"] = o.Attributes
 	return toSerialize, nil
 }
@@ -115,6 +143,7 @@ func (o *UpdateCityData) UnmarshalJSON(data []byte) (err error) {
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
 		"type",
+		"id",
 		"attributes",
 	}
 

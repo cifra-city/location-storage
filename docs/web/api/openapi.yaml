@@ -26,24 +26,10 @@ components:
       required:
       - errors
       type: object
-    CreateCountry:
-      properties:
-        data:
-          $ref: '#/components/schemas/CreateCountry_data'
-      required:
-      - data
-      type: object
     CreateCity:
       properties:
         data:
           $ref: '#/components/schemas/CreateCity_data'
-      required:
-      - data
-      type: object
-    CreateDistrict:
-      properties:
-        data:
-          $ref: '#/components/schemas/CreateDistrict_data'
       required:
       - data
       type: object
@@ -54,24 +40,10 @@ components:
       required:
       - data
       type: object
-    UpdateCountry:
-      properties:
-        data:
-          $ref: '#/components/schemas/UpdateCountry_data'
-      required:
-      - data
-      type: object
     UpdateCity:
       properties:
         data:
           $ref: '#/components/schemas/UpdateCity_data'
-      required:
-      - data
-      type: object
-    UpdateDistrict:
-      properties:
-        data:
-          $ref: '#/components/schemas/UpdateDistrict_data'
       required:
       - data
       type: object
@@ -82,24 +54,10 @@ components:
       required:
       - data
       type: object
-    DataByCountry:
-      properties:
-        data:
-          $ref: '#/components/schemas/DataByCountry_data'
-      required:
-      - data
-      type: object
     DataByCity:
       properties:
         data:
           $ref: '#/components/schemas/DataByCity_data'
-      required:
-      - data
-      type: object
-    DataByDistrict:
-      properties:
-        data:
-          $ref: '#/components/schemas/DataByDistrict_data'
       required:
       - data
       type: object
@@ -136,50 +94,25 @@ components:
       - status
       - title
       type: object
-    CreateCountry_data_attributes:
-      properties:
-        name:
-          description: Country name
-          example: United States
-          type: string
-      required:
-      - name
-      type: object
-    CreateCountry_data:
-      properties:
-        type:
-          enum:
-          - create_country
-          type: string
-        attributes:
-          $ref: '#/components/schemas/CreateCountry_data_attributes'
-      required:
-      - attributes
-      - type
-      type: object
     CreateCity_data_attributes:
       properties:
         name:
           description: City name
           example: kyiv
           type: string
-        city_id:
-          description: City uuid
-          example: d290f1ee-6c54-4b01-90e6-d701748f0851
-          type: string
-        country_id:
-          description: Country uuid if u need to change country for the city
-          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        location:
+          description: City location
+          example: "50.4501,30.5234"
           type: string
       required:
-      - city_id
+      - location
       - name
       type: object
     CreateCity_data:
       properties:
         type:
           enum:
-          - update_city
+          - create_city
           type: string
         attributes:
           $ref: '#/components/schemas/CreateCity_data_attributes'
@@ -187,44 +120,23 @@ components:
       - attributes
       - type
       type: object
-    CreateDistrict_data_attributes:
+    CreateStreet_data_attributes:
       properties:
         name:
-          description: District name
+          description: city name
           example: Saltovksliy district
           type: string
         city_id:
           description: city uuid
           example: d290f1ee-6c54-4b01-90e6-d701748f0851
           type: string
+        location:
+          description: Street location
+          example: "50.4501,30.5234"
+          type: string
       required:
       - city_id
-      - name
-      type: object
-    CreateDistrict_data:
-      properties:
-        type:
-          enum:
-          - create_district
-          type: string
-        attributes:
-          $ref: '#/components/schemas/CreateDistrict_data_attributes'
-      required:
-      - attributes
-      - type
-      type: object
-    CreateStreet_data_attributes:
-      properties:
-        name:
-          description: District name
-          example: Saltovksliy district
-          type: string
-        district_id:
-          description: District uuid
-          example: d290f1ee-6c54-4b01-90e6-d701748f0851
-          type: string
-      required:
-      - district_id
+      - location
       - name
       type: object
     CreateStreet_data:
@@ -239,48 +151,16 @@ components:
       - attributes
       - type
       type: object
-    UpdateCountry_data_attributes:
-      properties:
-        new_name:
-          description: New country name
-          example: kyiv
-          type: string
-        country_id:
-          description: Country uuid
-          example: d290f1ee-6c54-4b01-90e6-d701748f0851
-          type: string
-      required:
-      - country_id
-      - new_name
-      type: object
-    UpdateCountry_data:
-      properties:
-        type:
-          enum:
-          - update_country
-          type: string
-        attributes:
-          $ref: '#/components/schemas/UpdateCountry_data_attributes'
-      required:
-      - attributes
-      - type
-      type: object
     UpdateCity_data_attributes:
       properties:
-        city_id:
-          description: City uuid
-          example: d290f1ee-6c54-4b01-90e6-d701748f0851
-          type: string
         new_name:
           description: City new name
           example: kyiv
           type: string
-        country_id:
-          description: Country uuid if you want to change country
-          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        new_location:
+          description: City new location
+          example: "50.4501,30.5234"
           type: string
-      required:
-      - city_id
       type: object
     UpdateCity_data:
       properties:
@@ -288,39 +168,15 @@ components:
           enum:
           - update_city
           type: string
+        id:
+          description: City uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+          type: string
         attributes:
           $ref: '#/components/schemas/UpdateCity_data_attributes'
       required:
       - attributes
-      - type
-      type: object
-    UpdateDistrict_data_attributes:
-      properties:
-        new_name:
-          description: City new name
-          example: kyiv
-          type: string
-        district_id:
-          description: district uuid
-          example: d290f1ee-6c54-4b01-90e6-d701748f0851
-          type: string
-        city_id:
-          description: City uuid if u need to change city for the district
-          example: d290f1ee-6c54-4b01-90e6-d701748f0851
-          type: string
-      required:
-      - district_id
-      type: object
-    UpdateDistrict_data:
-      properties:
-        type:
-          enum:
-          - update_district
-          type: string
-        attributes:
-          $ref: '#/components/schemas/UpdateDistrict_data_attributes'
-      required:
-      - attributes
+      - id
       - type
       type: object
     UpdateStreet_data_attributes:
@@ -329,19 +185,21 @@ components:
           description: City name
           example: kyiv
           type: string
-        street_id:
-          description: Street uuid
+        new_location:
+          description: City location
+          example: "50.4501,30.5234"
+          type: string
+        new_city:
+          description: City uuid
           example: d290f1ee-6c54-4b01-90e6-d701748f0851
           type: string
-        district_id:
-          description: District uuid if u need to change district for the street
-          example: d290f1ee-6c54-4b01-90e6-d701748f0851
-          type: string
-      required:
-      - street_id
       type: object
     UpdateStreet_data:
       properties:
+        id:
+          description: street id
+          format: uuid
+          type: string
         type:
           enum:
           - update_street
@@ -350,62 +208,24 @@ components:
           $ref: '#/components/schemas/UpdateStreet_data_attributes'
       required:
       - attributes
-      - type
-      type: object
-    DataByCountry_data_attributes_cities_inner:
-      properties:
-        id:
-          description: city id
-          format: uuid
-          type: string
-        name:
-          description: city name
-          type: string
-      required:
-      - id
-      - name
-      type: object
-    DataByCountry_data_attributes:
-      properties:
-        name:
-          description: Country name
-          type: string
-        cities:
-          items:
-            $ref: '#/components/schemas/DataByCountry_data_attributes_cities_inner'
-          type: array
-      required:
-      - cities
-      - name
-      type: object
-    DataByCountry_data:
-      properties:
-        id:
-          description: country id
-          format: uuid
-          type: string
-        type:
-          enum:
-          - data_by_country
-          type: string
-        attributes:
-          $ref: '#/components/schemas/DataByCountry_data_attributes'
-      required:
-      - attributes
       - id
       - type
       type: object
-    DataByCity_data_attributes_districts_inner:
+    DataByCity_data_attributes_streets_inner:
       properties:
         id:
-          description: district id
+          description: street id
           format: uuid
           type: string
         name:
-          description: District name
+          description: street name
+          type: string
+        locations:
+          description: street location
           type: string
       required:
       - id
+      - locations
       - name
       type: object
     DataByCity_data_attributes:
@@ -413,17 +233,18 @@ components:
         name:
           description: City name
           type: string
-        country:
-          description: Country name
+        locations:
+          description: City location
+          example: "50.4501,30.5234"
           type: string
-        districts:
+        streets:
           items:
-            $ref: '#/components/schemas/DataByCity_data_attributes_districts_inner'
+            $ref: '#/components/schemas/DataByCity_data_attributes_streets_inner'
           type: array
       required:
-      - country
-      - districts
+      - locations
       - name
+      - streets
       type: object
     DataByCity_data:
       properties:
@@ -442,67 +263,21 @@ components:
       - id
       - type
       type: object
-    DataByDistrict_data_attributes_streets_inner:
-      properties:
-        id:
-          description: street id
-          format: uuid
-          type: string
-        name:
-          description: street name
-          type: string
-      required:
-      - id
-      - name
-      type: object
-    DataByDistrict_data_attributes:
-      properties:
-        name:
-          description: district name
-          type: string
-        city:
-          description: city uuid
-          type: string
-        streets:
-          items:
-            $ref: '#/components/schemas/DataByDistrict_data_attributes_streets_inner'
-          type: array
-      required:
-      - city
-      - name
-      - streets
-      type: object
-    DataByDistrict_data:
-      properties:
-        id:
-          description: district id
-          format: uuid
-          type: string
-        type:
-          enum:
-          - data_by_district
-          type: string
-        attributes:
-          $ref: '#/components/schemas/DataByDistrict_data_attributes'
-      required:
-      - attributes
-      - id
-      - type
-      type: object
     DataByStreet_data_attributes:
       properties:
         city:
           description: city uuid
           type: string
-        district:
-          description: district uuid
-          type: string
         name:
           description: Street name
           type: string
+        locations:
+          description: Street location
+          example: "50.4501,30.5234"
+          type: string
       required:
       - city
-      - district
+      - locations
       - name
       type: object
     DataByStreet_data:

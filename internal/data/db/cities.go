@@ -8,14 +8,13 @@ import (
 )
 
 type Cities interface {
-	Create(ctx context.Context, name string, countryId uuid.UUID) (dbcore.City, error)
+	Create(ctx context.Context, name string, location string) (dbcore.City, error)
 
 	Get(ctx context.Context, id uuid.UUID) (dbcore.City, error)
 	GetByName(ctx context.Context, name string) (dbcore.City, error)
-	GetByCountry(ctx context.Context, countryID uuid.UUID) ([]dbcore.City, error)
 
 	UpdateName(ctx context.Context, id uuid.UUID, name string) (dbcore.City, error)
-	UpdateCountry(ctx context.Context, CityId uuid.UUID, countryID uuid.UUID) (dbcore.City, error)
+	UpdateLocation(ctx context.Context, id uuid.UUID, location string) (dbcore.City, error)
 
 	Delete(ctx context.Context, id uuid.UUID) error
 }
@@ -28,10 +27,11 @@ func NewCities(queries *dbcore.Queries) Cities {
 	return &cities{queries: queries}
 }
 
-func (c *cities) Create(ctx context.Context, name string, countryId uuid.UUID) (dbcore.City, error) {
+func (c *cities) Create(ctx context.Context, name string, location string) (dbcore.City, error) {
 	return c.queries.CreateCity(ctx, dbcore.CreateCityParams{
-		Name:      name,
-		CountryID: countryId,
+		ID:       uuid.New(),
+		Name:     name,
+		Location: location,
 	})
 }
 
@@ -43,10 +43,6 @@ func (c *cities) GetByName(ctx context.Context, name string) (dbcore.City, error
 	return c.queries.GetCityByName(ctx, name)
 }
 
-func (c *cities) GetByCountry(ctx context.Context, countryID uuid.UUID) ([]dbcore.City, error) {
-	return c.queries.GetCitiesByCountry(ctx, countryID)
-}
-
 func (c *cities) UpdateName(ctx context.Context, id uuid.UUID, name string) (dbcore.City, error) {
 	return c.queries.UpdateCityName(ctx, dbcore.UpdateCityNameParams{
 		ID:   id,
@@ -54,10 +50,10 @@ func (c *cities) UpdateName(ctx context.Context, id uuid.UUID, name string) (dbc
 	})
 }
 
-func (c *cities) UpdateCountry(ctx context.Context, CityId uuid.UUID, countryID uuid.UUID) (dbcore.City, error) {
-	return c.queries.UpdateCityCountry(ctx, dbcore.UpdateCityCountryParams{
-		ID:        CityId,
-		CountryID: countryID,
+func (c *cities) UpdateLocation(ctx context.Context, id uuid.UUID, location string) (dbcore.City, error) {
+	return c.queries.UpdateCityLocation(ctx, dbcore.UpdateCityLocationParams{
+		ID:       id,
+		Location: location,
 	})
 }
 

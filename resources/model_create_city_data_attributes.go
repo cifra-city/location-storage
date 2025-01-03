@@ -23,10 +23,8 @@ var _ MappedNullable = &CreateCityDataAttributes{}
 type CreateCityDataAttributes struct {
 	// City name
 	Name string `json:"name"`
-	// City uuid
-	CityId string `json:"city_id"`
-	// Country uuid if u need to change country for the city
-	CountryId *string `json:"country_id,omitempty"`
+	// City location
+	Location string `json:"location"`
 }
 
 type _CreateCityDataAttributes CreateCityDataAttributes
@@ -35,10 +33,10 @@ type _CreateCityDataAttributes CreateCityDataAttributes
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCreateCityDataAttributes(name string, cityId string) *CreateCityDataAttributes {
+func NewCreateCityDataAttributes(name string, location string) *CreateCityDataAttributes {
 	this := CreateCityDataAttributes{}
 	this.Name = name
-	this.CityId = cityId
+	this.Location = location
 	return &this
 }
 
@@ -74,60 +72,28 @@ func (o *CreateCityDataAttributes) SetName(v string) {
 	o.Name = v
 }
 
-// GetCityId returns the CityId field value
-func (o *CreateCityDataAttributes) GetCityId() string {
+// GetLocation returns the Location field value
+func (o *CreateCityDataAttributes) GetLocation() string {
 	if o == nil {
 		var ret string
 		return ret
 	}
 
-	return o.CityId
+	return o.Location
 }
 
-// GetCityIdOk returns a tuple with the CityId field value
+// GetLocationOk returns a tuple with the Location field value
 // and a boolean to check if the value has been set.
-func (o *CreateCityDataAttributes) GetCityIdOk() (*string, bool) {
+func (o *CreateCityDataAttributes) GetLocationOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.CityId, true
+	return &o.Location, true
 }
 
-// SetCityId sets field value
-func (o *CreateCityDataAttributes) SetCityId(v string) {
-	o.CityId = v
-}
-
-// GetCountryId returns the CountryId field value if set, zero value otherwise.
-func (o *CreateCityDataAttributes) GetCountryId() string {
-	if o == nil || IsNil(o.CountryId) {
-		var ret string
-		return ret
-	}
-	return *o.CountryId
-}
-
-// GetCountryIdOk returns a tuple with the CountryId field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *CreateCityDataAttributes) GetCountryIdOk() (*string, bool) {
-	if o == nil || IsNil(o.CountryId) {
-		return nil, false
-	}
-	return o.CountryId, true
-}
-
-// HasCountryId returns a boolean if a field has been set.
-func (o *CreateCityDataAttributes) HasCountryId() bool {
-	if o != nil && !IsNil(o.CountryId) {
-		return true
-	}
-
-	return false
-}
-
-// SetCountryId gets a reference to the given string and assigns it to the CountryId field.
-func (o *CreateCityDataAttributes) SetCountryId(v string) {
-	o.CountryId = &v
+// SetLocation sets field value
+func (o *CreateCityDataAttributes) SetLocation(v string) {
+	o.Location = v
 }
 
 func (o CreateCityDataAttributes) MarshalJSON() ([]byte, error) {
@@ -141,10 +107,7 @@ func (o CreateCityDataAttributes) MarshalJSON() ([]byte, error) {
 func (o CreateCityDataAttributes) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["name"] = o.Name
-	toSerialize["city_id"] = o.CityId
-	if !IsNil(o.CountryId) {
-		toSerialize["country_id"] = o.CountryId
-	}
+	toSerialize["location"] = o.Location
 	return toSerialize, nil
 }
 
@@ -154,7 +117,7 @@ func (o *CreateCityDataAttributes) UnmarshalJSON(data []byte) (err error) {
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
 		"name",
-		"city_id",
+		"location",
 	}
 
 	allProperties := make(map[string]interface{})

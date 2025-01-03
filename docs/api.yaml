@@ -17,27 +17,15 @@ components:
   schemas:
     Errors:
       $ref: './spec/components/schemas/Errors.yaml'
-    CreateCountry:
-      $ref: './spec/components/schemas/CreateCountry.yaml'
     CreateCity:
       $ref: './spec/components/schemas/CreateCity.yaml'
-    CreateDistrict:
-      $ref: './spec/components/schemas/CreateDistrict.yaml'
     CreateStreet:
       $ref: './spec/components/schemas/CreateStreet.yaml'
-    UpdateCountry:
-      $ref: './spec/components/schemas/UpdateCountry.yaml'
     UpdateCity:
       $ref: './spec/components/schemas/UpdateCity.yaml'
-    UpdateDistrict:
-      $ref: './spec/components/schemas/UpdateDistrict.yaml'
     UpdateStreet:
       $ref: './spec/components/schemas/UpdateStreet.yaml'
-    DataByCountry:
-      $ref: './spec/components/schemas/DataByCountry.yaml'
     DataByCity:
       $ref: './spec/components/schemas/DataByCity.yaml'
-    DataByDistrict:
-      $ref: './spec/components/schemas/DataByDistrict.yaml'
     DataByStreet:
       $ref: './spec/components/schemas/DataByStreet.yaml'

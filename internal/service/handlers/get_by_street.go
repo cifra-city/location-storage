@@ -37,21 +37,14 @@ func DataByStreet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	district, err := server.Databaser.Districts.Get(r.Context(), street.DistrictID)
-	if err != nil {
-		log.Errorf("Failed to get district: %v", err)
-		httpkit.RenderErr(w, problems.InternalError())
-		return
-	}
-
 	httpkit.Render(w, resources.DataByStreet{
 		Data: resources.DataByStreetData{
 			Id:   street.ID.String(),
 			Type: resources.DataByStreetType,
 			Attributes: resources.DataByStreetDataAttributes{
-				Name:     street.Name,
-				District: district.ID.String(),
-				City:     district.CityID.String(),
+				Name:      street.Name,
+				Locations: street.Location.(string),
+				City:      street.CityID.String(),
 			},
 		},
 	})

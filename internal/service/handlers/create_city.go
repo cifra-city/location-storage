@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"regexp"
 	"strings"
 
 	"github.com/cifra-city/comtools/cifractx"
@@ -10,10 +11,18 @@ import (
 	"github.com/cifra-city/location-storage/internal/config"
 	"github.com/cifra-city/location-storage/internal/service/requests"
 	"github.com/cifra-city/tokens"
-	"github.com/google/uuid"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )
+
+var geoRegex = regexp.MustCompile(`^(POINT\((-?\d+(\.\d+)?\s-?\d+(\.\d+)?)\)|LINESTRING\((-?\d+(\.\d+)?\s-?\d+(\.\d+)?,?\s?)+\)|POLYGON\(\((-?\d+(\.\d+)?\s-?\d+(\.\d+)?,?\s?)+\)\))$`)
+
+func validateGeoString(geo string) error {
+	if !geoRegex.MatchString(geo) {
+		return errors.New("invalid geometry format")
+	}
+	return nil
+}
 
 func CreateCity(w http.ResponseWriter, r *http.Request) {
 	server, err := cifractx.GetValue[*config.Service](r.Context(), config.SERVER)
@@ -45,7 +54,14 @@ func CreateCity(w http.ResponseWriter, r *http.Request) {
 	}
 
 	name := strings.ToLower(req.Data.Attributes.Name)
-	country := req.Data.Attributes.CountryId
+	location := req.Data.Attributes.Location
+
+	err = validateGeoString(location)
+	if err != nil {
+		log.Warnf("Invalid location: %v", err)
+		httpkit.RenderErr(w, problems.BadRequest(errors.New("invalid location"))...)
+		return
+	}
 
 	if name == "" {
 		log.Warn("City name is required")
@@ -53,14 +69,7 @@ func CreateCity(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	countryId, err := uuid.Parse(*country)
-	if err != nil {
-		log.Warn("Country ID is invalid")
-		httpkit.RenderErr(w, problems.BadRequest(errors.New("country ID is invalid"))...)
-		return
-	}
-
-	_, err = server.Databaser.Cities.Create(r.Context(), name, countryId)
+	_, err = server.Databaser.Cities.Create(r.Context(), name, location)
 	if err != nil {
 		log.Errorf("Failed to create city: %v", err)
 		httpkit.RenderErr(w, problems.InternalError())

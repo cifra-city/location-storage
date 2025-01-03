@@ -5,14 +5,14 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **NewName** | Pointer to **string** | City name | [optional] 
-**StreetId** | **string** | Street uuid | 
-**DistrictId** | Pointer to **string** | District uuid if u need to change district for the street | [optional] 
+**NewLocation** | Pointer to **string** | City location | [optional] 
+**NewCity** | Pointer to **string** | City uuid | [optional] 
 
 ## Methods
 
 ### NewUpdateStreetDataAttributes
 
-`func NewUpdateStreetDataAttributes(streetId string, ) *UpdateStreetDataAttributes`
+`func NewUpdateStreetDataAttributes() *UpdateStreetDataAttributes`
 
 NewUpdateStreetDataAttributes instantiates a new UpdateStreetDataAttributes object
 This constructor will assign default values to properties that have it defined,
@@ -52,50 +52,55 @@ SetNewName sets NewName field to given value.
 
 HasNewName returns a boolean if a field has been set.
 
-### GetStreetId
+### GetNewLocation
 
-`func (o *UpdateStreetDataAttributes) GetStreetId() string`
+`func (o *UpdateStreetDataAttributes) GetNewLocation() string`
 
-GetStreetId returns the StreetId field if non-nil, zero value otherwise.
+GetNewLocation returns the NewLocation field if non-nil, zero value otherwise.
 
-### GetStreetIdOk
+### GetNewLocationOk
 
-`func (o *UpdateStreetDataAttributes) GetStreetIdOk() (*string, bool)`
+`func (o *UpdateStreetDataAttributes) GetNewLocationOk() (*string, bool)`
 
-GetStreetIdOk returns a tuple with the StreetId field if it's non-nil, zero value otherwise
+GetNewLocationOk returns a tuple with the NewLocation field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetStreetId
+### SetNewLocation
 
-`func (o *UpdateStreetDataAttributes) SetStreetId(v string)`
+`func (o *UpdateStreetDataAttributes) SetNewLocation(v string)`
 
-SetStreetId sets StreetId field to given value.
+SetNewLocation sets NewLocation field to given value.
 
+### HasNewLocation
 
-### GetDistrictId
+`func (o *UpdateStreetDataAttributes) HasNewLocation() bool`
 
-`func (o *UpdateStreetDataAttributes) GetDistrictId() string`
+HasNewLocation returns a boolean if a field has been set.
 
-GetDistrictId returns the DistrictId field if non-nil, zero value otherwise.
+### GetNewCity
 
-### GetDistrictIdOk
+`func (o *UpdateStreetDataAttributes) GetNewCity() string`
 
-`func (o *UpdateStreetDataAttributes) GetDistrictIdOk() (*string, bool)`
+GetNewCity returns the NewCity field if non-nil, zero value otherwise.
 
-GetDistrictIdOk returns a tuple with the DistrictId field if it's non-nil, zero value otherwise
+### GetNewCityOk
+
+`func (o *UpdateStreetDataAttributes) GetNewCityOk() (*string, bool)`
+
+GetNewCityOk returns a tuple with the NewCity field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetDistrictId
+### SetNewCity
 
-`func (o *UpdateStreetDataAttributes) SetDistrictId(v string)`
+`func (o *UpdateStreetDataAttributes) SetNewCity(v string)`
 
-SetDistrictId sets DistrictId field to given value.
+SetNewCity sets NewCity field to given value.
 
-### HasDistrictId
+### HasNewCity
 
-`func (o *UpdateStreetDataAttributes) HasDistrictId() bool`
+`func (o *UpdateStreetDataAttributes) HasNewCity() bool`
 
-HasDistrictId returns a boolean if a field has been set.
+HasNewCity returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

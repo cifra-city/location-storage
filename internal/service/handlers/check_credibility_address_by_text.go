@@ -23,17 +23,11 @@ func CheckCredibilityAddressByText(w http.ResponseWriter, r *http.Request) {
 	log := server.Logger
 
 	cityUrl := chi.URLParam(r, "city")
-	districtUrl := chi.URLParam(r, "district")
 	streetUrl := chi.URLParam(r, "street")
 
 	cityId, err := uuid.Parse(cityUrl)
 	if err != nil {
 		httpkit.RenderErr(w, problems.BadRequest(errors.New("city id is required"))...)
-		return
-	}
-	districtId, err := uuid.Parse(districtUrl)
-	if err != nil {
-		httpkit.RenderErr(w, problems.BadRequest(errors.New("district id is required"))...)
 		return
 	}
 	streetId, err := uuid.Parse(streetUrl)
@@ -49,20 +43,15 @@ func CheckCredibilityAddressByText(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if street.DistrictID != districtId {
-		httpkit.RenderErr(w, problems.Conflict("street does not belong to the district"))
-		return
-	}
-
-	district, err := server.Databaser.Districts.Get(r.Context(), districtId)
+	city, err := server.Databaser.Cities.Get(r.Context(), cityId)
 	if err != nil {
-		log.Errorf("Failed to get district: %v", err)
+		log.Errorf("Failed to get city: %v", err)
 		httpkit.RenderErr(w, problems.InternalError())
 		return
 	}
 
-	if district.CityID != cityId {
-		httpkit.RenderErr(w, problems.Conflict("district does not belong to the city"))
+	if street.CityID != city.ID {
+		httpkit.RenderErr(w, problems.Conflict())
 		return
 	}
 

@@ -23,9 +23,9 @@ var _ MappedNullable = &DataByCityDataAttributes{}
 type DataByCityDataAttributes struct {
 	// City name
 	Name string `json:"name"`
-	// Country name
-	Country string `json:"country"`
-	Districts []DataByCityDataAttributesDistrictsInner `json:"districts"`
+	// City location
+	Locations string `json:"locations"`
+	Streets []DataByCityDataAttributesStreetsInner `json:"streets"`
 }
 
 type _DataByCityDataAttributes DataByCityDataAttributes
@@ -34,11 +34,11 @@ type _DataByCityDataAttributes DataByCityDataAttributes
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewDataByCityDataAttributes(name string, country string, districts []DataByCityDataAttributesDistrictsInner) *DataByCityDataAttributes {
+func NewDataByCityDataAttributes(name string, locations string, streets []DataByCityDataAttributesStreetsInner) *DataByCityDataAttributes {
 	this := DataByCityDataAttributes{}
 	this.Name = name
-	this.Country = country
-	this.Districts = districts
+	this.Locations = locations
+	this.Streets = streets
 	return &this
 }
 
@@ -74,52 +74,52 @@ func (o *DataByCityDataAttributes) SetName(v string) {
 	o.Name = v
 }
 
-// GetCountry returns the Country field value
-func (o *DataByCityDataAttributes) GetCountry() string {
+// GetLocations returns the Locations field value
+func (o *DataByCityDataAttributes) GetLocations() string {
 	if o == nil {
 		var ret string
 		return ret
 	}
 
-	return o.Country
+	return o.Locations
 }
 
-// GetCountryOk returns a tuple with the Country field value
+// GetLocationsOk returns a tuple with the Locations field value
 // and a boolean to check if the value has been set.
-func (o *DataByCityDataAttributes) GetCountryOk() (*string, bool) {
+func (o *DataByCityDataAttributes) GetLocationsOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.Country, true
+	return &o.Locations, true
 }
 
-// SetCountry sets field value
-func (o *DataByCityDataAttributes) SetCountry(v string) {
-	o.Country = v
+// SetLocations sets field value
+func (o *DataByCityDataAttributes) SetLocations(v string) {
+	o.Locations = v
 }
 
-// GetDistricts returns the Districts field value
-func (o *DataByCityDataAttributes) GetDistricts() []DataByCityDataAttributesDistrictsInner {
+// GetStreets returns the Streets field value
+func (o *DataByCityDataAttributes) GetStreets() []DataByCityDataAttributesStreetsInner {
 	if o == nil {
-		var ret []DataByCityDataAttributesDistrictsInner
+		var ret []DataByCityDataAttributesStreetsInner
 		return ret
 	}
 
-	return o.Districts
+	return o.Streets
 }
 
-// GetDistrictsOk returns a tuple with the Districts field value
+// GetStreetsOk returns a tuple with the Streets field value
 // and a boolean to check if the value has been set.
-func (o *DataByCityDataAttributes) GetDistrictsOk() ([]DataByCityDataAttributesDistrictsInner, bool) {
+func (o *DataByCityDataAttributes) GetStreetsOk() ([]DataByCityDataAttributesStreetsInner, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return o.Districts, true
+	return o.Streets, true
 }
 
-// SetDistricts sets field value
-func (o *DataByCityDataAttributes) SetDistricts(v []DataByCityDataAttributesDistrictsInner) {
-	o.Districts = v
+// SetStreets sets field value
+func (o *DataByCityDataAttributes) SetStreets(v []DataByCityDataAttributesStreetsInner) {
+	o.Streets = v
 }
 
 func (o DataByCityDataAttributes) MarshalJSON() ([]byte, error) {
@@ -133,8 +133,8 @@ func (o DataByCityDataAttributes) MarshalJSON() ([]byte, error) {
 func (o DataByCityDataAttributes) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["name"] = o.Name
-	toSerialize["country"] = o.Country
-	toSerialize["districts"] = o.Districts
+	toSerialize["locations"] = o.Locations
+	toSerialize["streets"] = o.Streets
 	return toSerialize, nil
 }
 
@@ -144,8 +144,8 @@ func (o *DataByCityDataAttributes) UnmarshalJSON(data []byte) (err error) {
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
 		"name",
-		"country",
-		"districts",
+		"locations",
+		"streets",
 	}
 
 	allProperties := make(map[string]interface{})

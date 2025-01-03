@@ -12,28 +12,38 @@ import (
 )
 
 const createStreet = `-- name: CreateStreet :one
-INSERT INTO streets (
-    name,
-    district_id
-) VALUES (
-    $1, $2
-)  RETURNING id, name, district_id
+INSERT INTO streets (id, name, city_id, location)
+VALUES ($1, $2, $3, $4)
+RETURNING id, name, city_id, location
 `
 
 type CreateStreetParams struct {
-	Name       string
-	DistrictID uuid.UUID
+	ID       uuid.UUID
+	Name     string
+	CityID   uuid.UUID
+	Location interface{}
 }
 
 func (q *Queries) CreateStreet(ctx context.Context, arg CreateStreetParams) (Street, error) {
-	row := q.db.QueryRowContext(ctx, createStreet, arg.Name, arg.DistrictID)
+	row := q.db.QueryRowContext(ctx, createStreet,
+		arg.ID,
+		arg.Name,
+		arg.CityID,
+		arg.Location,
+	)
 	var i Street
-	err := row.Scan(&i.ID, &i.Name, &i.DistrictID)
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.CityID,
+		&i.Location,
+	)
 	return i, err
 }
 
 const deleteStreet = `-- name: DeleteStreet :exec
-DELETE FROM streets WHERE id = $1
+DELETE FROM streets
+WHERE id = $1
 `
 
 func (q *Queries) DeleteStreet(ctx context.Context, id uuid.UUID) error {
@@ -42,33 +52,48 @@ func (q *Queries) DeleteStreet(ctx context.Context, id uuid.UUID) error {
 }
 
 const getStreetByID = `-- name: GetStreetByID :one
-SELECT id, name, district_id FROM streets WHERE id = $1
+SELECT id, name, city_id, location FROM streets
+WHERE id = $1
 `
 
 func (q *Queries) GetStreetByID(ctx context.Context, id uuid.UUID) (Street, error) {
 	row := q.db.QueryRowContext(ctx, getStreetByID, id)
 	var i Street
-	err := row.Scan(&i.ID, &i.Name, &i.DistrictID)
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.CityID,
+		&i.Location,
+	)
 	return i, err
 }
 
 const getStreetByName = `-- name: GetStreetByName :one
-SELECT id, name, district_id FROM streets WHERE name = $1
+SELECT id, name, city_id, location FROM streets
+WHERE name = $1
 `
 
 func (q *Queries) GetStreetByName(ctx context.Context, name string) (Street, error) {
 	row := q.db.QueryRowContext(ctx, getStreetByName, name)
 	var i Street
-	err := row.Scan(&i.ID, &i.Name, &i.DistrictID)
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.CityID,
+		&i.Location,
+	)
 	return i, err
 }
 
-const getStreetsByDistrict = `-- name: GetStreetsByDistrict :many
-SELECT id, name, district_id FROM streets WHERE district_id = $1
+const listStreetsByCity = `-- name: ListStreetsByCity :many
+SELECT id, name, city_id, location
+FROM streets
+WHERE city_id = $1
+ORDER BY name
 `
 
-func (q *Queries) GetStreetsByDistrict(ctx context.Context, districtID uuid.UUID) ([]Street, error) {
-	rows, err := q.db.QueryContext(ctx, getStreetsByDistrict, districtID)
+func (q *Queries) ListStreetsByCity(ctx context.Context, cityID uuid.UUID) ([]Street, error) {
+	rows, err := q.db.QueryContext(ctx, listStreetsByCity, cityID)
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +101,12 @@ func (q *Queries) GetStreetsByDistrict(ctx context.Context, districtID uuid.UUID
 	var items []Street
 	for rows.Next() {
 		var i Street
-		if err := rows.Scan(&i.ID, &i.Name, &i.DistrictID); err != nil {
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.CityID,
+			&i.Location,
+		); err != nil {
 			return nil, err
 		}
 		items = append(items, i)
@@ -90,32 +120,84 @@ func (q *Queries) GetStreetsByDistrict(ctx context.Context, districtID uuid.UUID
 	return items, nil
 }
 
-const updateStreetDistrict = `-- name: UpdateStreetDistrict :one
-UPDATE streets SET
-   district_id = $2
-WHERE
-   id = $1
-RETURNING id, name, district_id
+const updateStreet = `-- name: UpdateStreet :one
+UPDATE streets
+SET name = $2, location = $3
+WHERE id = $1
+RETURNING id, name, city_id, location
 `
 
-type UpdateStreetDistrictParams struct {
-	ID         uuid.UUID
-	DistrictID uuid.UUID
+type UpdateStreetParams struct {
+	ID       uuid.UUID
+	Name     string
+	Location interface{}
 }
 
-func (q *Queries) UpdateStreetDistrict(ctx context.Context, arg UpdateStreetDistrictParams) (Street, error) {
-	row := q.db.QueryRowContext(ctx, updateStreetDistrict, arg.ID, arg.DistrictID)
+func (q *Queries) UpdateStreet(ctx context.Context, arg UpdateStreetParams) (Street, error) {
+	row := q.db.QueryRowContext(ctx, updateStreet, arg.ID, arg.Name, arg.Location)
 	var i Street
-	err := row.Scan(&i.ID, &i.Name, &i.DistrictID)
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.CityID,
+		&i.Location,
+	)
+	return i, err
+}
+
+const updateStreetCity = `-- name: UpdateStreetCity :one
+UPDATE streets
+SET city_id = $2
+WHERE id = $1
+RETURNING id, name, city_id, location
+`
+
+type UpdateStreetCityParams struct {
+	ID     uuid.UUID
+	CityID uuid.UUID
+}
+
+func (q *Queries) UpdateStreetCity(ctx context.Context, arg UpdateStreetCityParams) (Street, error) {
+	row := q.db.QueryRowContext(ctx, updateStreetCity, arg.ID, arg.CityID)
+	var i Street
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.CityID,
+		&i.Location,
+	)
+	return i, err
+}
+
+const updateStreetLocation = `-- name: UpdateStreetLocation :one
+UPDATE streets
+SET location = $2
+WHERE id = $1
+RETURNING id, name, city_id, location
+`
+
+type UpdateStreetLocationParams struct {
+	ID       uuid.UUID
+	Location interface{}
+}
+
+func (q *Queries) UpdateStreetLocation(ctx context.Context, arg UpdateStreetLocationParams) (Street, error) {
+	row := q.db.QueryRowContext(ctx, updateStreetLocation, arg.ID, arg.Location)
+	var i Street
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.CityID,
+		&i.Location,
+	)
 	return i, err
 }
 
 const updateStreetName = `-- name: UpdateStreetName :one
-UPDATE streets SET
-   name = $2
-WHERE
-   id = $1
-RETURNING id, name, district_id
+UPDATE streets
+SET name = $2
+WHERE id = $1
+RETURNING id, name, city_id, location
 `
 
 type UpdateStreetNameParams struct {
@@ -126,6 +208,11 @@ type UpdateStreetNameParams struct {
 func (q *Queries) UpdateStreetName(ctx context.Context, arg UpdateStreetNameParams) (Street, error) {
 	row := q.db.QueryRowContext(ctx, updateStreetName, arg.ID, arg.Name)
 	var i Street
-	err := row.Scan(&i.ID, &i.Name, &i.DistrictID)
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.CityID,
+		&i.Location,
+	)
 	return i, err
 }

@@ -19,15 +19,16 @@ properties:
         type: object
         required:
           - city
-          - district
           - name
+          - locations
         properties:
           city:
             type: string
             description: "city uuid"
-          district:
-            type: string
-            description: "district uuid"
           name:
             type: string
             description: "Street name"
+          locations:
+            type: string
+            description: "Street location"
+            example: "50.4501,30.5234"

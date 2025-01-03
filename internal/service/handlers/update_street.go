@@ -10,6 +10,7 @@ import (
 	"github.com/cifra-city/location-storage/internal/config"
 	"github.com/cifra-city/location-storage/internal/service/requests"
 	"github.com/google/uuid"
+	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )
 
@@ -29,9 +30,10 @@ func UpdateStreet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	street := req.Data.Id
 	newName := req.Data.Attributes.NewName
-	street := req.Data.Attributes.StreetId
-	newDistrict := req.Data.Attributes.DistrictId
+	newLocation := req.Data.Attributes.NewLocation
+	newCity := req.Data.Attributes.NewCity
 
 	streetId, err := uuid.Parse(street)
 	if err != nil {
@@ -49,16 +51,32 @@ func UpdateStreet(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if newDistrict != nil {
-		newDistrictId, err := uuid.Parse(*newDistrict)
+	if newLocation != nil {
+		err = validateGeoString(*newLocation)
 		if err != nil {
-			log.Debugf("error parsing district id: %v", err)
+			log.Warnf("Invalid location: %v", err)
+			httpkit.RenderErr(w, problems.BadRequest(errors.New("invalid location"))...)
+			return
+		}
+
+		_, err = server.Databaser.Streets.UpdateLocation(r.Context(), streetId, *newLocation)
+		if err != nil {
+			log.Errorf("Failed to update street district: %v", err)
+			httpkit.RenderErr(w, problems.InternalError())
+			return
+		}
+	}
+
+	if newCity != nil {
+		newCityId, err := uuid.Parse(*newCity)
+		if err != nil {
+			log.Debugf("error parsing city id: %v", err)
 			httpkit.RenderErr(w, problems.BadRequest(err)...)
 			return
 		}
-		_, err = server.Databaser.Streets.UpdateDistrict(r.Context(), streetId, newDistrictId)
+		_, err = server.Databaser.Streets.UpdateCity(r.Context(), streetId, newCityId)
 		if err != nil {
-			log.Errorf("Failed to update street district: %v", err)
+			log.Errorf("Failed to update street city: %v", err)
 			httpkit.RenderErr(w, problems.InternalError())
 			return
 		}

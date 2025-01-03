@@ -14,13 +14,18 @@ properties:
         type: object
         required:
           - name
-          - district_id
+          - city_id
+          - location
         properties:
           name:
             type: string
-            description: "District name"
+            description: "city name"
             example: "Saltovksliy district"
-          district_id:
+          city_id:
             type: string
-            description: "District uuid"
+            description: "city uuid"
             example: "d290f1ee-6c54-4b01-90e6-d701748f0851"
+          location:
+            type: string
+            description: "Street location"
+            example: "50.4501,30.5234"

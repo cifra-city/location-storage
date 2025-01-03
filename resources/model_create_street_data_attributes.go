@@ -21,10 +21,12 @@ var _ MappedNullable = &CreateStreetDataAttributes{}
 
 // CreateStreetDataAttributes struct for CreateStreetDataAttributes
 type CreateStreetDataAttributes struct {
-	// District name
+	// city name
 	Name string `json:"name"`
-	// District uuid
-	DistrictId string `json:"district_id"`
+	// city uuid
+	CityId string `json:"city_id"`
+	// Street location
+	Location string `json:"location"`
 }
 
 type _CreateStreetDataAttributes CreateStreetDataAttributes
@@ -33,10 +35,11 @@ type _CreateStreetDataAttributes CreateStreetDataAttributes
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCreateStreetDataAttributes(name string, districtId string) *CreateStreetDataAttributes {
+func NewCreateStreetDataAttributes(name string, cityId string, location string) *CreateStreetDataAttributes {
 	this := CreateStreetDataAttributes{}
 	this.Name = name
-	this.DistrictId = districtId
+	this.CityId = cityId
+	this.Location = location
 	return &this
 }
 
@@ -72,28 +75,52 @@ func (o *CreateStreetDataAttributes) SetName(v string) {
 	o.Name = v
 }
 
-// GetDistrictId returns the DistrictId field value
-func (o *CreateStreetDataAttributes) GetDistrictId() string {
+// GetCityId returns the CityId field value
+func (o *CreateStreetDataAttributes) GetCityId() string {
 	if o == nil {
 		var ret string
 		return ret
 	}
 
-	return o.DistrictId
+	return o.CityId
 }
 
-// GetDistrictIdOk returns a tuple with the DistrictId field value
+// GetCityIdOk returns a tuple with the CityId field value
 // and a boolean to check if the value has been set.
-func (o *CreateStreetDataAttributes) GetDistrictIdOk() (*string, bool) {
+func (o *CreateStreetDataAttributes) GetCityIdOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.DistrictId, true
+	return &o.CityId, true
 }
 
-// SetDistrictId sets field value
-func (o *CreateStreetDataAttributes) SetDistrictId(v string) {
-	o.DistrictId = v
+// SetCityId sets field value
+func (o *CreateStreetDataAttributes) SetCityId(v string) {
+	o.CityId = v
+}
+
+// GetLocation returns the Location field value
+func (o *CreateStreetDataAttributes) GetLocation() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Location
+}
+
+// GetLocationOk returns a tuple with the Location field value
+// and a boolean to check if the value has been set.
+func (o *CreateStreetDataAttributes) GetLocationOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Location, true
+}
+
+// SetLocation sets field value
+func (o *CreateStreetDataAttributes) SetLocation(v string) {
+	o.Location = v
 }
 
 func (o CreateStreetDataAttributes) MarshalJSON() ([]byte, error) {
@@ -107,7 +134,8 @@ func (o CreateStreetDataAttributes) MarshalJSON() ([]byte, error) {
 func (o CreateStreetDataAttributes) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["name"] = o.Name
-	toSerialize["district_id"] = o.DistrictId
+	toSerialize["city_id"] = o.CityId
+	toSerialize["location"] = o.Location
 	return toSerialize, nil
 }
 
@@ -117,7 +145,8 @@ func (o *CreateStreetDataAttributes) UnmarshalJSON(data []byte) (err error) {
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
 		"name",
-		"district_id",
+		"city_id",
+		"location",
 	}
 
 	allProperties := make(map[string]interface{})

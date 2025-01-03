@@ -9,24 +9,14 @@ import (
 )
 
 type City struct {
-	ID        uuid.UUID
-	Name      string
-	CountryID uuid.UUID
-}
-
-type Country struct {
-	ID   uuid.UUID
-	Name string
-}
-
-type District struct {
-	ID     uuid.UUID
-	Name   string
-	CityID uuid.UUID
+	ID       uuid.UUID
+	Name     string
+	Location interface{}
 }
 
 type Street struct {
-	ID         uuid.UUID
-	Name       string
-	DistrictID uuid.UUID
+	ID       uuid.UUID
+	Name     string
+	CityID   uuid.UUID
+	Location interface{}
 }

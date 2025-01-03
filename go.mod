@@ -6,7 +6,7 @@ require (
 	github.com/alecthomas/kingpin v2.2.6+incompatible
 	github.com/cifra-city/cifra-rabbit v0.0.1
 	github.com/cifra-city/comtools v0.0.2
-	github.com/cifra-city/tokens v1.3.0
+	github.com/cifra-city/tokens v0.0.1
 	github.com/go-chi/chi/v5 v5.2.0
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/google/uuid v1.6.0

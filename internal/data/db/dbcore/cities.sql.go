@@ -12,28 +12,27 @@ import (
 )
 
 const createCity = `-- name: CreateCity :one
-INSERT INTO cities (
-    name,
-    country_id
-) VALUES (
-    $1, $2
-) RETURNING id, name, country_id
+INSERT INTO cities (id, name, location)
+VALUES ($1, $2, $3)
+RETURNING id, name, location
 `
 
 type CreateCityParams struct {
-	Name      string
-	CountryID uuid.UUID
+	ID       uuid.UUID
+	Name     string
+	Location interface{}
 }
 
 func (q *Queries) CreateCity(ctx context.Context, arg CreateCityParams) (City, error) {
-	row := q.db.QueryRowContext(ctx, createCity, arg.Name, arg.CountryID)
+	row := q.db.QueryRowContext(ctx, createCity, arg.ID, arg.Name, arg.Location)
 	var i City
-	err := row.Scan(&i.ID, &i.Name, &i.CountryID)
+	err := row.Scan(&i.ID, &i.Name, &i.Location)
 	return i, err
 }
 
 const deleteCity = `-- name: DeleteCity :exec
-DELETE FROM cities WHERE id = $1
+DELETE FROM cities
+WHERE id = $1
 `
 
 func (q *Queries) DeleteCity(ctx context.Context, id uuid.UUID) error {
@@ -41,12 +40,37 @@ func (q *Queries) DeleteCity(ctx context.Context, id uuid.UUID) error {
 	return err
 }
 
-const getCitiesByCountry = `-- name: GetCitiesByCountry :many
-SELECT id, name, country_id FROM cities WHERE country_id = $1
+const getCityByID = `-- name: GetCityByID :one
+SELECT id, name, location FROM cities
+WHERE id = $1
 `
 
-func (q *Queries) GetCitiesByCountry(ctx context.Context, countryID uuid.UUID) ([]City, error) {
-	rows, err := q.db.QueryContext(ctx, getCitiesByCountry, countryID)
+func (q *Queries) GetCityByID(ctx context.Context, id uuid.UUID) (City, error) {
+	row := q.db.QueryRowContext(ctx, getCityByID, id)
+	var i City
+	err := row.Scan(&i.ID, &i.Name, &i.Location)
+	return i, err
+}
+
+const getCityByName = `-- name: GetCityByName :one
+SELECT id, name, location FROM cities
+WHERE name = $1
+`
+
+func (q *Queries) GetCityByName(ctx context.Context, name string) (City, error) {
+	row := q.db.QueryRowContext(ctx, getCityByName, name)
+	var i City
+	err := row.Scan(&i.ID, &i.Name, &i.Location)
+	return i, err
+}
+
+const listCities = `-- name: ListCities :many
+SELECT id, name, location FROM cities
+ORDER BY name
+`
+
+func (q *Queries) ListCities(ctx context.Context) ([]City, error) {
+	rows, err := q.db.QueryContext(ctx, listCities)
 	if err != nil {
 		return nil, err
 	}
@@ -54,7 +78,7 @@ func (q *Queries) GetCitiesByCountry(ctx context.Context, countryID uuid.UUID) (
 	var items []City
 	for rows.Next() {
 		var i City
-		if err := rows.Scan(&i.ID, &i.Name, &i.CountryID); err != nil {
+		if err := rows.Scan(&i.ID, &i.Name, &i.Location); err != nil {
 			return nil, err
 		}
 		items = append(items, i)
@@ -68,52 +92,50 @@ func (q *Queries) GetCitiesByCountry(ctx context.Context, countryID uuid.UUID) (
 	return items, nil
 }
 
-const getCityByID = `-- name: GetCityByID :one
-SELECT id, name, country_id FROM cities WHERE id = $1
-`
-
-func (q *Queries) GetCityByID(ctx context.Context, id uuid.UUID) (City, error) {
-	row := q.db.QueryRowContext(ctx, getCityByID, id)
-	var i City
-	err := row.Scan(&i.ID, &i.Name, &i.CountryID)
-	return i, err
-}
-
-const getCityByName = `-- name: GetCityByName :one
-SELECT id, name, country_id FROM cities WHERE name = $1
-`
-
-func (q *Queries) GetCityByName(ctx context.Context, name string) (City, error) {
-	row := q.db.QueryRowContext(ctx, getCityByName, name)
-	var i City
-	err := row.Scan(&i.ID, &i.Name, &i.CountryID)
-	return i, err
-}
-
-const updateCityCountry = `-- name: UpdateCityCountry :one
-UPDATE cities SET
-    country_id = $2
+const updateCity = `-- name: UpdateCity :one
+UPDATE cities
+SET name = $2, location = $3
 WHERE id = $1
-RETURNING id, name, country_id
+RETURNING id, name, location
 `
 
-type UpdateCityCountryParams struct {
-	ID        uuid.UUID
-	CountryID uuid.UUID
+type UpdateCityParams struct {
+	ID       uuid.UUID
+	Name     string
+	Location interface{}
 }
 
-func (q *Queries) UpdateCityCountry(ctx context.Context, arg UpdateCityCountryParams) (City, error) {
-	row := q.db.QueryRowContext(ctx, updateCityCountry, arg.ID, arg.CountryID)
+func (q *Queries) UpdateCity(ctx context.Context, arg UpdateCityParams) (City, error) {
+	row := q.db.QueryRowContext(ctx, updateCity, arg.ID, arg.Name, arg.Location)
 	var i City
-	err := row.Scan(&i.ID, &i.Name, &i.CountryID)
+	err := row.Scan(&i.ID, &i.Name, &i.Location)
+	return i, err
+}
+
+const updateCityLocation = `-- name: UpdateCityLocation :one
+UPDATE cities
+SET location = $2
+WHERE id = $1
+RETURNING id, name, location
+`
+
+type UpdateCityLocationParams struct {
+	ID       uuid.UUID
+	Location interface{}
+}
+
+func (q *Queries) UpdateCityLocation(ctx context.Context, arg UpdateCityLocationParams) (City, error) {
+	row := q.db.QueryRowContext(ctx, updateCityLocation, arg.ID, arg.Location)
+	var i City
+	err := row.Scan(&i.ID, &i.Name, &i.Location)
 	return i, err
 }
 
 const updateCityName = `-- name: UpdateCityName :one
-UPDATE cities SET
-    name = $2
+UPDATE cities
+SET name = $2
 WHERE id = $1
-RETURNING id, name, country_id
+RETURNING id, name, location
 `
 
 type UpdateCityNameParams struct {
@@ -124,6 +146,6 @@ type UpdateCityNameParams struct {
 func (q *Queries) UpdateCityName(ctx context.Context, arg UpdateCityNameParams) (City, error) {
 	row := q.db.QueryRowContext(ctx, updateCityName, arg.ID, arg.Name)
 	var i City
-	err := row.Scan(&i.ID, &i.Name, &i.CountryID)
+	err := row.Scan(&i.ID, &i.Name, &i.Location)
 	return i, err
 }

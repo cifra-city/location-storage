@@ -5,14 +5,13 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Name** | **string** | City name | 
-**CityId** | **string** | City uuid | 
-**CountryId** | Pointer to **string** | Country uuid if u need to change country for the city | [optional] 
+**Location** | **string** | City location | 
 
 ## Methods
 
 ### NewCreateCityDataAttributes
 
-`func NewCreateCityDataAttributes(name string, cityId string, ) *CreateCityDataAttributes`
+`func NewCreateCityDataAttributes(name string, location string, ) *CreateCityDataAttributes`
 
 NewCreateCityDataAttributes instantiates a new CreateCityDataAttributes object
 This constructor will assign default values to properties that have it defined,
@@ -47,50 +46,25 @@ and a boolean to check if the value has been set.
 SetName sets Name field to given value.
 
 
-### GetCityId
+### GetLocation
 
-`func (o *CreateCityDataAttributes) GetCityId() string`
+`func (o *CreateCityDataAttributes) GetLocation() string`
 
-GetCityId returns the CityId field if non-nil, zero value otherwise.
+GetLocation returns the Location field if non-nil, zero value otherwise.
 
-### GetCityIdOk
+### GetLocationOk
 
-`func (o *CreateCityDataAttributes) GetCityIdOk() (*string, bool)`
+`func (o *CreateCityDataAttributes) GetLocationOk() (*string, bool)`
 
-GetCityIdOk returns a tuple with the CityId field if it's non-nil, zero value otherwise
+GetLocationOk returns a tuple with the Location field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetCityId
+### SetLocation
 
-`func (o *CreateCityDataAttributes) SetCityId(v string)`
+`func (o *CreateCityDataAttributes) SetLocation(v string)`
 
-SetCityId sets CityId field to given value.
+SetLocation sets Location field to given value.
 
-
-### GetCountryId
-
-`func (o *CreateCityDataAttributes) GetCountryId() string`
-
-GetCountryId returns the CountryId field if non-nil, zero value otherwise.
-
-### GetCountryIdOk
-
-`func (o *CreateCityDataAttributes) GetCountryIdOk() (*string, bool)`
-
-GetCountryIdOk returns a tuple with the CountryId field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetCountryId
-
-`func (o *CreateCityDataAttributes) SetCountryId(v string)`
-
-SetCountryId sets CountryId field to given value.
-
-### HasCountryId
-
-`func (o *CreateCityDataAttributes) HasCountryId() bool`
-
-HasCountryId returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

@@ -8,14 +8,15 @@ import (
 )
 
 type Streets interface {
-	Create(ctx context.Context, name string, districtId uuid.UUID) (dbcore.Street, error)
+	Create(ctx context.Context, name string, districtId uuid.UUID, location string) (dbcore.Street, error)
 
 	Get(ctx context.Context, id uuid.UUID) (dbcore.Street, error)
 	GetByName(ctx context.Context, name string) (dbcore.Street, error)
-	GetByDistrict(ctx context.Context, districtID uuid.UUID) ([]dbcore.Street, error)
+	ListStreetsByCity(ctx context.Context, cityId uuid.UUID) ([]dbcore.Street, error)
 
 	UpdateName(ctx context.Context, id uuid.UUID, name string) (dbcore.Street, error)
-	UpdateDistrict(ctx context.Context, streetId uuid.UUID, districtId uuid.UUID) (dbcore.Street, error)
+	UpdateCity(ctx context.Context, id uuid.UUID, cityId uuid.UUID) (dbcore.Street, error)
+	UpdateLocation(ctx context.Context, id uuid.UUID, location string) (dbcore.Street, error)
 
 	Delete(ctx context.Context, id uuid.UUID) error
 }
@@ -28,10 +29,11 @@ func NewStreets(queries *dbcore.Queries) Streets {
 	return &streets{queries: queries}
 }
 
-func (s *streets) Create(ctx context.Context, name string, districtId uuid.UUID) (dbcore.Street, error) {
+func (s *streets) Create(ctx context.Context, name string, cityId uuid.UUID, location string) (dbcore.Street, error) {
 	return s.queries.CreateStreet(ctx, dbcore.CreateStreetParams{
-		Name:       name,
-		DistrictID: districtId,
+		Name:     name,
+		CityID:   cityId,
+		Location: location,
 	})
 }
 
@@ -43,8 +45,8 @@ func (s *streets) GetByName(ctx context.Context, name string) (dbcore.Street, er
 	return s.queries.GetStreetByName(ctx, name)
 }
 
-func (s *streets) GetByDistrict(ctx context.Context, districtID uuid.UUID) ([]dbcore.Street, error) {
-	return s.queries.GetStreetsByDistrict(ctx, districtID)
+func (s *streets) ListStreetsByCity(ctx context.Context, cityId uuid.UUID) ([]dbcore.Street, error) {
+	return s.queries.ListStreetsByCity(ctx, cityId)
 }
 
 func (s *streets) UpdateName(ctx context.Context, id uuid.UUID, name string) (dbcore.Street, error) {
@@ -54,10 +56,17 @@ func (s *streets) UpdateName(ctx context.Context, id uuid.UUID, name string) (db
 	})
 }
 
-func (s *streets) UpdateDistrict(ctx context.Context, streetId uuid.UUID, districtId uuid.UUID) (dbcore.Street, error) {
-	return s.queries.UpdateStreetDistrict(ctx, dbcore.UpdateStreetDistrictParams{
-		ID:         streetId,
-		DistrictID: districtId,
+func (s *streets) UpdateCity(ctx context.Context, id uuid.UUID, cityId uuid.UUID) (dbcore.Street, error) {
+	return s.queries.UpdateStreetCity(ctx, dbcore.UpdateStreetCityParams{
+		ID:     id,
+		CityID: cityId,
+	})
+}
+
+func (s *streets) UpdateLocation(ctx context.Context, id uuid.UUID, location string) (dbcore.Street, error) {
+	return s.queries.UpdateStreetLocation(ctx, dbcore.UpdateStreetLocationParams{
+		ID:       id,
+		Location: location,
 	})
 }
 
